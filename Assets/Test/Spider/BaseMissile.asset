@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235b14201ab6e9541a70cd48653e8502, type: 3}
+  m_Name: BaseMissile
+  m_EditorClassIdentifier: 
+  _missilePrefab: {fileID: 7466006175663259147, guid: 233151e5a9eb627498de771db1aa3d29, type: 3}
+  _emitterEffectPrefab: {fileID: 8658595235224885482, guid: f51b0b632ca23b64697644649f12d2b2, type: 3}
+  _impactCollection: {fileID: 11400000, guid: 6b5af96c3ec7b524784c513e109df74d, type: 2}

@@ -51,6 +51,8 @@ namespace NN
             public LayerMask groundLayer;
         }
 
+        public bool MoveActive { get; set; }
+
         private class MoveModel
         {
             public Vector3 Speed;
@@ -64,6 +66,7 @@ namespace NN
             _initialized = true;
             _moveAction.action.Enable();
             _mousePositionAction.action.Enable();
+            MoveActive = true;
         }
 
         private void Start()
@@ -78,7 +81,8 @@ namespace NN
         {
             if (_initialized)
             {
-                UpdateMove( Time.deltaTime );
+                if(MoveActive)
+                    UpdateMove( Time.deltaTime );
             }
         }
 

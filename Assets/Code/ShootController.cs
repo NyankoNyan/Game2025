@@ -7,45 +7,45 @@ using UnityEngine.InputSystem;
 namespace NN
 {
     /// <summary>
-    /// Контроллер стрельбы, управляющий стрельбой из различных видов оружия.
+    /// РљРѕРЅС‚СЂРѕР»Р»РµСЂ СЃС‚СЂРµР»СЊР±С‹, СѓРїСЂР°РІР»СЏСЋС‰РёР№ СЃС‚СЂРµР»СЊР±РѕР№ РёР· СЂР°Р·Р»РёС‡РЅС‹С… РІРёРґРѕРІ РѕСЂСѓР¶РёСЏ.
     /// </summary>
     public class ShootController : MonoBehaviour
     {
-        [Tooltip( "Количество слотов для оружия/навыков." )]
+        [Tooltip( "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃР»РѕС‚РѕРІ РґР»СЏ РѕСЂСѓР¶РёСЏ/РЅР°РІС‹РєРѕРІ." )]
         [SerializeField]
         private int _skillSlotsCount = 2;
 
-        [Tooltip( "Точка, из которой происходит стрельба." )]
+        [Tooltip( "РўРѕС‡РєР°, РёР· РєРѕС‚РѕСЂРѕР№ РїСЂРѕРёСЃС…РѕРґРёС‚ СЃС‚СЂРµР»СЊР±Р°." )]
         [SerializeField]
         private Transform _shootingPoint;
 
-        [Tooltip( "Слои, по которым могут попадать снаряды." )]
+        [Tooltip( "РЎР»РѕРё, РїРѕ РєРѕС‚РѕСЂС‹Рј РјРѕРіСѓС‚ РїРѕРїР°РґР°С‚СЊ СЃРЅР°СЂСЏРґС‹." )]
         [SerializeField]
         private LayerMask _bulletsHitLayers = ~0;
 
-        [Tooltip( "Маска слой земли. Нужен для понимания на какое расстояние от земли стреляет игрок." )]
+        [Tooltip( "РњР°СЃРєР° СЃР»РѕР№ Р·РµРјР»Рё. РќСѓР¶РµРЅ РґР»СЏ РїРѕРЅРёРјР°РЅРёСЏ РЅР° РєР°РєРѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ Р·РµРјР»Рё СЃС‚СЂРµР»СЏРµС‚ РёРіСЂРѕРє." )]
         [SerializeField]
         private LayerMask _groundLayer;
 
-        [Tooltip( "Целевая высота снаряда в целевом месте стрельбы." )]
+        [Tooltip( "Р¦РµР»РµРІР°СЏ РІС‹СЃРѕС‚Р° СЃРЅР°СЂСЏРґР° РІ С†РµР»РµРІРѕРј РјРµСЃС‚Рµ СЃС‚СЂРµР»СЊР±С‹." )]
         [SerializeField]
         private float _bulletTargetHeight = 1.5f;
 
-        [Tooltip( "Максимальная дистанция проверки земли." )]
+        [Tooltip( "РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґРёСЃС‚Р°РЅС†РёСЏ РїСЂРѕРІРµСЂРєРё Р·РµРјР»Рё." )]
         [SerializeField]
         private float _groundTestDistance = 50f;
 
         [Header( "Controls" )]
-        [Tooltip( "Инпуты InputSystem для скиллов." )]
+        [Tooltip( "РРЅРїСѓС‚С‹ InputSystem РґР»СЏ СЃРєРёР»Р»РѕРІ." )]
         [SerializeField]
         private InputActionReference[] _skillActions;
 
-        [Tooltip( "Ввод InputSystem для позиции мыши." )]
+        [Tooltip( "Р’РІРѕРґ InputSystem РґР»СЏ РїРѕР·РёС†РёРё РјС‹С€Рё." )]
         [SerializeField]
         private InputActionReference _mousePositionAction;
 
         [Header( "Initialize" )]
-        [Tooltip( "Идентификаторы скиллов по умолчанию по слотам." )]
+        [Tooltip( "РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ СЃРєРёР»Р»РѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїРѕ СЃР»РѕС‚Р°Рј." )]
         [SerializeField]
         private string[] _defaultIds = new[] { "RIFLE" };
 
@@ -54,7 +54,7 @@ namespace NN
         private bool _initialized;
 
         /// <summary>
-        /// Инициализация контроллера стрельбы.
+        /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СЃС‚СЂРµР»СЊР±С‹.
         /// </summary>
         public void Init()
         {
@@ -75,7 +75,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Стартовая инициализация
+        /// РЎС‚Р°СЂС‚РѕРІР°СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
         /// </summary>
         private void Start()
         {
@@ -95,7 +95,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Проверка полей на корректность.
+        /// РџСЂРѕРІРµСЂРєР° РїРѕР»РµР№ РЅР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚СЊ.
         /// </summary>
         private void ValidateFields()
         {
@@ -105,7 +105,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Инициализация пресетов скиллов по умолчанию.
+        /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїСЂРµСЃРµС‚РѕРІ СЃРєРёР»Р»РѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.
         /// </summary>
         private void InitDefaults()
         {
@@ -120,7 +120,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Обновление состояния контроллера.
+        /// РћР±РЅРѕРІР»РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РєРѕРЅС‚СЂРѕР»Р»РµСЂР°.
         /// </summary>
         private void Update()
         {
@@ -131,7 +131,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Обновление состояния стрельбы.
+        /// РћР±РЅРѕРІР»РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ СЃС‚СЂРµР»СЊР±С‹.
         /// </summary>
         private void UpdateShooting()
         {
@@ -152,9 +152,9 @@ namespace NN
         }
 
         /// <summary>
-        /// Обработка стрельбы в зависимости от типа оружия.
+        /// РћР±СЂР°Р±РѕС‚РєР° СЃС‚СЂРµР»СЊР±С‹ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° РѕСЂСѓР¶РёСЏ.
         /// </summary>
-        /// <param name="weaponPreset">Пресет оружия.</param>
+        /// <param name="weaponPreset">РџСЂРµСЃРµС‚ РѕСЂСѓР¶РёСЏ.</param>
         private void HandleWeaponShooting(WeaponPreset weaponPreset)
         {
             switch (weaponPreset.weaponType)
@@ -169,9 +169,9 @@ namespace NN
         }
 
         /// <summary>
-        /// Стрельба из оружия типа Ray.
+        /// РЎС‚СЂРµР»СЊР±Р° РёР· РѕСЂСѓР¶РёСЏ С‚РёРїР° Ray.
         /// </summary>
-        /// <param name="weaponPreset">Пресет оружия.</param>
+        /// <param name="weaponPreset">РџСЂРµСЃРµС‚ РѕСЂСѓР¶РёСЏ.</param>
         private void ShootRayWeapon(WeaponPreset weaponPreset)
         {
             Vector3 target = GetShootingTarget( Vector3.up );
@@ -198,10 +198,10 @@ namespace NN
         
 
         /// <summary>
-        /// Получение целевой позиции для стрельбы в зависимости от положения указателя.
+        /// РџРѕР»СѓС‡РµРЅРёРµ С†РµР»РµРІРѕР№ РїРѕР·РёС†РёРё РґР»СЏ СЃС‚СЂРµР»СЊР±С‹ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РїРѕР»РѕР¶РµРЅРёСЏ СѓРєР°Р·Р°С‚РµР»СЏ.
         /// </summary>
-        /// <param name="up">Направление вверх.</param>
-        /// <returns>Координаты цели.</returns>
+        /// <param name="up">РќР°РїСЂР°РІР»РµРЅРёРµ РІРІРµСЂС….</param>
+        /// <returns>РљРѕРѕСЂРґРёРЅР°С‚С‹ С†РµР»Рё.</returns>
         private Vector3 GetShootingTarget(Vector3 up)
         {
             Vector2 mousePosition = _mousePositionAction.action.ReadValue<Vector2>();
@@ -233,11 +233,11 @@ namespace NN
         }
 
         /// <summary>
-        /// Получение информации о попадании при стрельбе.
+        /// РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕРїР°РґР°РЅРёРё РїСЂРё СЃС‚СЂРµР»СЊР±Рµ.
         /// </summary>
-        /// <param name="target">Цель стрельбы.</param>
-        /// <param name="distance">Максимальная дистанция стрельбы.</param>
-        /// <returns>Результат стрельбы.</returns>
+        /// <param name="target">Р¦РµР»СЊ СЃС‚СЂРµР»СЊР±С‹.</param>
+        /// <param name="distance">РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґРёСЃС‚Р°РЅС†РёСЏ СЃС‚СЂРµР»СЊР±С‹.</param>
+        /// <returns>Р РµР·СѓР»СЊС‚Р°С‚ СЃС‚СЂРµР»СЊР±С‹.</returns>
         private RayShootingResult GetShootingHit(Vector3 target, float distance)
         {
             Vector3 direction = (target - _shootingPoint.position).normalized;
@@ -263,7 +263,7 @@ namespace NN
         }
 
         /// <summary>
-        /// Структура для хранения результата стрельбы типа Ray.
+        /// РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р° СЃС‚СЂРµР»СЊР±С‹ С‚РёРїР° Ray.
         /// </summary>
         private struct RayShootingResult
         {

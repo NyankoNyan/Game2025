@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31405705d3cc0d940bfaf5bfd1702062, type: 3}
+  m_Name: BaseMissileImpacts
+  m_EditorClassIdentifier: 
+  _effects: []
+  _defaultEffect:
+    _sound: {fileID: 8300000, guid: 938eecdf06d587f4fb4b0a5e85888aeb, type: 3}
+    _effect: {fileID: 9045539425118087086, guid: e615781d4c36c7d45863a79eb9aced70, type: 3}
+    _decal: {fileID: 14492314197899363, guid: e684abf1df7419344a0791d950993e74, type: 3}
