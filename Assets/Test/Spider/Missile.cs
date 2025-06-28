@@ -45,6 +45,11 @@ namespace NN
             {
                 rb.AddExplosionForce( _weaponSettings.BlastForce, transform.position, _weaponSettings.BlastRaduis, 0, ForceMode.Impulse );
             }
+
+            if (target.TryGetComponent<Test.IDestructible>( out var destructible ))
+            {
+                destructible.AddDamage( (int)_weaponSettings.Damage );
+            }
         }
 
         private void SetDecalPositionAndRotation(Collider collider, Transform decal)

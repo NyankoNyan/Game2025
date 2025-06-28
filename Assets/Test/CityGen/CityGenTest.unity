@@ -148,10 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 909094d3f0db9d943931a9d8e2b3cb1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoneSize: {x: 64, y: 64}
-  _growLimitMin: {x: 1, y: 1}
-  _growLimitMax: {x: 3, y: 3}
-  _growProbability: 1
+  _settings:
+    ZoneSize: {x: 64, y: 64}
+    GrowLimitMin: {x: 1, y: 1}
+    GrowLimitMax: {x: 3, y: 3}
+    GrowProbability: 0.5
   _groundPrefab: {fileID: 5092036794271914783, guid: 339674e3913d01044b006b478080b70e, type: 3}
   _scale: {x: 2, y: 2}
   _padding: 1
@@ -171,6 +172,98 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1626622362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1626622364}
+  - component: {fileID: 1626622363}
+  - component: {fileID: 1626622365}
+  m_Layer: 0
+  m_Name: FullCityTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1626622363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626622362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e39d1dbf28339b545aa42e16de3ed630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _seed: 0
+  _cityLayerSettings:
+    ZoneSize: {x: 8, y: 8}
+    GrowLimitMin: {x: 1, y: 1}
+    GrowLimitMax: {x: 3, y: 3}
+    GrowProbability: 0.5
+  _cityScale: {x: 500, y: 500}
+  _betweenDistrictsGap: 10
+  _districtSidePrefab: {fileID: 4060723318595206413, guid: a984e39b5680df241bef2e6138629f09, type: 3}
+  _districtCornerPrefab: {fileID: 3201604772177025054, guid: ca7752fec7d82aa4aa38bb27a93b8224, type: 3}
+  _districtLayerSettings:
+    ZoneSize: {x: 100, y: 100}
+    AxisRate: {x: 1, y: 1}
+    MinimalBlockSize: {x: 5, y: 5}
+    MaxDepth: 5
+    RateConvergence: 2
+    DepthRoadWidth: 030000000200000001000000
+  _roadPrefab: {fileID: 3849487846369699051, guid: a47196dcd8fe1114f98da1faef7cfbb0, type: 3}
+  _roadScale: 0.1
+  _districtUnitSize: {x: 10, y: 10}
+  _blockLayerSettings:
+    Size: {x: 20, y: 20}
+    LogicalUnitSize: {x: 5, y: 5}
+    BuildingPriorityLists:
+    - Priority: 1
+      Buildings:
+      - Prefab: {fileID: 1229216443977233918, guid: e6cb2d5517441844fab8608290bd9947, type: 3}
+        Size: {x: 3, y: 3}
+      - Prefab: {fileID: 9024242190601038419, guid: d54f4d0c13a14e84aa8d0eaed3e38608, type: 3}
+        Size: {x: 5, y: 5}
+    - Priority: 2
+      Buildings:
+      - Prefab: {fileID: 5819542757821899334, guid: a0ca9a9c2bb5a4349bb2744071792133, type: 3}
+        Size: {x: 2, y: 2}
+  _floorPrefab: {fileID: 5092036794271914783, guid: 3b88c4641b1925d41ab31f0cf156c389, type: 3}
+--- !u!4 &1626622364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626622362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1626622365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626622362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d38cac08172b942a501b1f9cbb2478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1756865094
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,12 +293,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703ec3b2314e76d408ff4a9d640d5d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoneSize: {x: 200, y: 100}
-  _axisRate: {x: 2, y: 1}
-  _minimalBlockSize: {x: 7, y: 7}
-  _maxDepth: 5
-  _rateConvergence: 2
-  _depthRoadWidth: 030000000200000001000000
+  _settings:
+    ZoneSize: {x: 100, y: 100}
+    AxisRate: {x: 1, y: 1}
+    MinimalBlockSize: {x: 5, y: 5}
+    MaxDepth: 5
+    RateConvergence: 2
+    DepthRoadWidth: 030000000200000001000000
   _seed: 2
   _blockPrefab: {fileID: 5092036794271914783, guid: 5edd53ef24c08d9429af83ca119b0ccd, type: 3}
   _roadPrefab: {fileID: 5092036794271914783, guid: 6a1cc8bf20d062845ac5a10a3b4092a7, type: 3}
@@ -405,7 +499,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -432,13 +526,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944930708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.24116197, y: 0.33527026, z: -0.089208506, w: 0.9063535}
+  m_LocalPosition: {x: 0, y: 380.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.336, y: 31.645, z: 0}
 --- !u!114 &1944930712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,13 +587,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2038087710}
   - component: {fileID: 2038087709}
+  - component: {fileID: 2038087711}
   m_Layer: 0
   m_Name: BuildingPlacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2038087709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,7 +608,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gs:
-    Size: {x: 10, y: 20}
+    Size: {x: 50, y: 20}
+    LogicalUnitSize: {x: 2, y: 2}
     BuildingPriorityLists:
     - Priority: 1
       Buildings:
@@ -525,10 +621,7 @@ MonoBehaviour:
       Buildings:
       - Prefab: {fileID: 3031173756452908322, guid: 08a26d3ca47a3e941bcadb6703c89aea, type: 3}
         Size: {x: 1, y: 1}
-    PlacementTrying: 10
-    GarbageCollectionAfter: 10
   _seed: 1
-  _logicalUnitSize: {x: 2, y: 2}
   _floorPrefab: {fileID: 5092036794271914783, guid: 5edd53ef24c08d9429af83ca119b0ccd, type: 3}
 --- !u!4 &2038087710
 Transform:
@@ -545,6 +638,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2038087711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038087708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d38cac08172b942a501b1f9cbb2478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -554,3 +659,4 @@ SceneRoots:
   - {fileID: 2038087710}
   - {fileID: 1756865096}
   - {fileID: 1097159257}
+  - {fileID: 1626622364}
