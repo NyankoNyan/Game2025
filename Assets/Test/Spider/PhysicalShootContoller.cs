@@ -73,7 +73,8 @@ namespace NN
             var missile = missileGO.GetComponent<Missile>();
             if (missile)
             {
-                missile.Setup( weaponSettings );
+                var shooterCollider = _physicsModelEmitter.GetComponentInParent<Collider>();
+                missile.Setup( weaponSettings, shooterCollider);
             }
 
             var effectGO = ScenePools.Instance.Get( weaponSettings.MissileSettings.EmitterEffectPrefab );

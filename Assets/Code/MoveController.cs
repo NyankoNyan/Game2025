@@ -119,6 +119,7 @@ namespace NN
             {
                 forward = Camera.main.transform.up;
             }
+            forward = forward.ProjectOntoPlane(up).normalized;
             Vector3 right = Vector3.Cross( up, forward ).normalized;
             return forward * input.y + right * input.x;
         }

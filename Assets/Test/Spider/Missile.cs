@@ -6,14 +6,43 @@ namespace NN
     public class Missile : MonoBehaviour
     {
         private IWeaponSettings _weaponSettings;
+        private Collider _shooterCollider;
 
-        public void Setup(IWeaponSettings weaponSettings)
+        /// <summary>
+        /// Состояния снаряда.
+        /// </summary>
+        private enum MissileState
+        {
+            Inactive, // Снаряд неактивен
+            Active,   // Снаряд летит
+            Exploded  // Снаряд взорвался
+        }
+
+        private MissileState _currentState = MissileState.Inactive;
+
+        /// <summary>
+        /// Настройка снаряда.
+        /// </summary>
+        /// <param name="weaponSettings">Настройки оружия.</param>
+        /// <param name="shooterCollider">Коллайдер стрелка, чтобы исключить его из столкновений.</param>
+        public void Setup(IWeaponSettings weaponSettings, Collider shooterCollider)
         {
             _weaponSettings = weaponSettings;
+            _shooterCollider = shooterCollider;
+            _currentState = MissileState.Active;
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_currentState != MissileState.Active)
+                return;
+
+            // Игнорируем коллайдер стрелка
+            if (other == _shooterCollider)
+                return;
+
+            _currentState = MissileState.Exploded;
+
             if (_weaponSettings.BlastRaduis > 0)
             {
                 var colliders = Physics.OverlapSphere( transform.position, _weaponSettings.BlastRaduis, ~0, QueryTriggerInteraction.Ignore );
@@ -26,6 +55,7 @@ namespace NN
                 TryAddForce( other.gameObject );
             }
 
+            // Создание эффектов
             ImpactEffect impactEffects = _weaponSettings.MissileSettings.ImpactCollection.GetEffect( other.tag );
             var effect = ScenePools.Instance.Get( impactEffects.Effect );
             effect.transform.SetPositionAndRotation( transform.position, transform.rotation );
