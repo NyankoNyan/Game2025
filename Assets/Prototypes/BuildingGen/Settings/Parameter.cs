@@ -15,6 +15,12 @@ namespace BuildingGen.Components
         public OperationNode OperationTree { get; set; }
 
         /// <summary>
+        /// Ссыла на другой параметр.
+        /// </summary>
+        [JsonProperty("ref", NullValueHandling = NullValueHandling.Ignore)]
+        public string Reference { get; set; }
+
+        /// <summary>
         /// Абстрактное значение параметра.
         /// </summary>
         public abstract object Value { get; }
@@ -43,7 +49,31 @@ namespace BuildingGen.Components
 
         /// <inheritdoc/>
         [JsonIgnore] // Подавляем сериализацию этого свойства
-        public override object Value => ConcreteValue;
+        public override object Value
+        {
+            get
+            {
+                if (typeof(TValue) == typeof(int))
+                {
+                    return ToInteger();
+                }
+                else if (typeof(TValue) == typeof(float))
+                {
+                    return ToFloat();
+                }
+                else
+                {
+                    return ConcreteValue;
+                }
+            }
+        }
+
+        public Parameter() : base() { }
+
+        public Parameter(TValue value) : base()
+        { 
+            ConcreteValue = value;
+        }
 
         /// <inheritdoc/>
         public override int ToInteger()

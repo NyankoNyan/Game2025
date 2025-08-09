@@ -5,19 +5,16 @@
 {
   "version": "1.0",
   "parameters": {
-    "parameterName1": { "value": 10 },
-    "parameterName2": {
+    // Прямое значение (без дерева операций)
+    "width": { "value": 8 },
+    
+    // Значение через дерево операций (20 - 5)
+    "height": { 
       "operationTree": {
-        "operation": "+",
+        "operation": "-",
         "operands": [
-          { "value": 5 },
-          {
-            "operation": "*",
-            "operands": [
-              { "value": 2 },
-              { "value": 3 }
-            ]
-          }
+          { "value": 20 },
+          { "value": 5 }
         ]
       }
     }
@@ -33,24 +30,40 @@
   "buildings": [
     {
       "id": "b1",
-      "name": "MainBuilding",
-      "description": "",
+      "name": "Residential",
       "sections": [
         {
-          "id": "s1",
-          "description": "",
+          "id": "sc1",
           "position": {
+            // Вектор позиции с параметрами
             "x": { "value": 0 },
             "y": { "value": 0 },
             "z": { "value": 0 }
           },
           "rotation": {
+            // Вектор вращения с параметрами
             "x": { "value": 0 },
             "y": { "value": 0 },
             "z": { "value": 0 }
           },
           "generationAlgorithm": "Grid",
-          "blockGroupId": "g1"
+          "generationSettingsGrid": {
+              // Настройки для алгоритма Grid:
+              // - size: размер сетки по осям X/Y/Z
+              // - spacing: расстояние между элементами в сетке
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 5 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "g1",
+          "blockMass": { "value": 100 }
         }
       ]
     }
@@ -141,12 +154,13 @@
 | Поле | Тип | Описание |
 |------|-----|----------|
 | `id` | `string` | Уникальный идентификатор секции |
-| `description` | `string` | Описание секции |
+| `description` | `string` | Описание секции (что-то вроде комментария в конфиге) |
 | `position` | `Vec3` | Позиция в пространстве |
 | `rotation` | `Vec3` | Вращение |
 | `generationAlgorithm` | `string` | Название алгоритма генерации |
-| `generationSettings` | `object` | Дополнительные настройки (опционально) |
-| `blockGroupId` | `string` | Идентификатор группы блоков (опционально) |
+| `generationSettingsGrid` | `GenerationSettingsGrid` | Дополнительные настройки для алгоритма Grid |
+| `blockGroupId` | `string` | Идентификатор группы блоков |
+| `blockMass` | `float` | Масса каждого блока секции |
 
 ---
 
@@ -180,6 +194,16 @@
 
 ---
 
+### `GenerationSettingsGrid` (настройки для алгоритма Grid)
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `size` | `Size3` | Размер сетки по осям X/Y/Z (количество элементов) |
+| `spacing` | `Vec3` | Расстояние между соседними элементами в сетке (шаг) |
+
+> **Примечание:** Эти настройки применяются только если `generationAlgorithm` = `"Grid"`.
+
+---
+
 ## Особенности сериализации
 1. **Параметры (`Parameter<TValue>`)**:
    - Для `int`: `"value": 10`
@@ -197,62 +221,13 @@
      }
      ```
 
-2. **Опциональные поля**:
-   - `generationSettings` и `blockGroupId` могут отсутствовать.
-
-3. **Кастомные конвертеры**:
+2. **Кастомные конвертеры**:
    - `ParameterConverter` обрабатывает типизированные параметры.
    - `ParameterDictionaryConverter` используется для словаря `parameters`.
 
 ---
 
-## Пример использования
-```json
-{
-  "version": "1.0",
-  "parameters": {
-    "width": { "value": 8 },
-    "height": { 
-      "operationTree": {
-        "operation": "-",
-        "operands": [
-          { "value": 20 },
-          { "value": 5 }
-        ]
-      }
-    }
-  },
-  "blockGroups": [
-    {
-      "id": "g1",
-      "blocks": [
-        { "id": "blk1", "pointType": "Inside" }
-      ]
-    }
-  ],
-  "buildings": [
-    {
-      "id": "b1",
-      "name": "Residential",
-      "sections": [
-        {
-          "id": "s1",
-          "position": {
-            "x": { "value": 0 },
-            "y": { "value": 0 },
-            "z": { "value": 0 }
-          },
-          "blockGroupId": "g1"
-        }
-      ]
-    }
-  ]
-}
-```
-
----
-
 ## Возможные расширения
 - Добавление новых типов `PointType`.
-- Расширение `generationSettings` для конкретных алгоритмов.
-- Поддержка сложных деревьев операций в `Parameter`.
+- Больше `generationAlgorithm` для новых алгоритмов.
+- Поддержка сложных деревьев операций в `Parameter` с большим числом операций.

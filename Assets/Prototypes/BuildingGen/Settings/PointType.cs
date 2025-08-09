@@ -20,9 +20,14 @@ namespace BuildingGen.Components
         Boundary,
 
         /// <summary>
-        /// Угловая точка.
+        /// Внешний угол.
         /// </summary>
-        Corner
+        OuterCorner,
+
+        /// <summary>
+        /// Внутренний угол.
+        /// </summary>
+        InnerCorner
     }
 
 }

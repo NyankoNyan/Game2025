@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c1069b399d0c34fbe83b9724195add, type: 3}
+  m_Name: FuturisticV2BlockMapping
+  m_EditorClassIdentifier: 
+  _mappings:
+  - blockId: b2_bc1
+    intactPrefab: {fileID: 1769115501513826650, guid: 8555aca35abf8014d9cd47be76dee3c4, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bc2
+    intactPrefab: {fileID: 1807746006838306237, guid: 31fbdd0701c116a4e8d172ac6f5879ff, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bc3
+    intactPrefab: {fileID: 8417358360605064471, guid: 4b009dcb4d1f90d42a71396730aef036, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bci2
+    intactPrefab: {fileID: 1594919705714555783, guid: 03ba227aa13681443b767f3ec0019914, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bci3
+    intactPrefab: {fileID: 5030117273928487421, guid: a26e177ac6f54674d8ff9b4300bd0d61, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bw1
+    intactPrefab: {fileID: 1842871686962669403, guid: fc9cfb4ba9ecff84581ff263fc971355, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bw2
+    intactPrefab: {fileID: 3445989326041225485, guid: 5cfdc1b4415741749a182e1c1a46f7c1, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_bw3
+    intactPrefab: {fileID: 8475503326569458126, guid: a39a770f0a750d244bc3860a4c5a70a9, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_f
+    intactPrefab: {fileID: 4735713418755172415, guid: d0d64cec619116846bd7b69c7d565fd5, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_mc
+    intactPrefab: {fileID: 3301757100136705164, guid: 1c5356a96fd9c644c8336edb4c4041ad, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_mi
+    intactPrefab: {fileID: 6993667165271596820, guid: 55178550ac863f8488a62f8c8d633661, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_mw
+    intactPrefab: {fileID: 5610663606353540611, guid: 5cfabb111211dc64782480ee83c54b99, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_r
+    intactPrefab: {fileID: 2149074756962050055, guid: 1a3a52346ea82f044a066091f0f45a0a, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_tc
+    intactPrefab: {fileID: 4135824933719396795, guid: b04f7fb2926323e40afbf203c83c65e3, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_tci
+    intactPrefab: {fileID: 6228340972232802708, guid: b6038fdc598ac5642adea0504c29a49a, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: b2_tw
+    intactPrefab: {fileID: 6379250283291196281, guid: 073ecc6dad2fa9f419300810b4877c1a, type: 3}
+    damagedPrefab: {fileID: 0}

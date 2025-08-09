@@ -1,5 +1,6 @@
 Требования к коду:
 - Для класса RigidBody необходимо использовать linearVelocity вместо velocity. Так рекомендует Unity.
+- 'Object.FindObjectOfType<T>()' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType'
 - Для методов, которые должны вызываться в методе Update или FixedUpdate каждый кадр, необходимо использовать префикс Update в названии. Например UpdateMovement, UpdateGroundState.
 - Для пользовательского ввода необходимо использовать InputActionReference вынесенные в настройки.
 - Использование волшебных чисел в коде методов недопустимо. Должны быть вынесены в настройки.

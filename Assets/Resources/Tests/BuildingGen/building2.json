@@ -1,0 +1,184 @@
+{
+  "version": "1.0",
+  "parameters":
+    {
+      "xsize": { "value": 5 },
+      "ysize": { "value": 5 }
+    },
+  "blockGroups": [
+    {
+      "id": "layer1",
+      "blocks": [
+        { "id": "b2_f", "pointType": "Inside" },
+        { "id": "b2_bc1", "pointType": "OuterCorner" },
+        { "id": "b2_bw1", "pointType": "Boundary" }
+      ]
+    },
+    {
+      "id": "layer2",
+      "blocks": [
+        { "id": "b2_mi", "pointType": "Inside" },
+        { "id": "b2_bc2", "pointType": "OuterCorner" },
+        { "id": "b2_bw2", "pointType": "Boundary" }
+      ]
+    },
+    {
+      "id": "layer3",
+      "blocks": [
+        { "id": "b2_mi", "pointType": "Inside" },
+        { "id": "b2_bc3", "pointType": "OuterCorner" },
+        { "id": "b2_bw3", "pointType": "Boundary" }
+      ]
+    },
+    {
+      "id": "layer4",
+      "blocks": [
+        { "id": "b2_mi", "pointType": "Inside" },
+        { "id": "b2_mc", "pointType": "OuterCorner" },
+        { "id": "b2_mw", "pointType": "Boundary" }
+      ]
+    },
+    {
+      "id": "layer5",
+      "blocks": [
+        { "id": "b2_r", "pointType": "Inside" },
+        { "id": "b2_tc", "pointType": "OuterCorner" },
+        { "id": "b2_tw", "pointType": "Boundary" }
+      ]
+    }
+  ],
+  "buildings": [
+    {
+      "id": "b1",
+      "name": "Futuristic Building",
+      "sections": [
+        {
+          "id": "sc1",
+          "position": {
+            "x": { "value": 0 },
+            "y": { "value": 0 },
+            "z": { "value": 0 }
+          },
+          "generationAlgorithm": "Grid",
+          "generationSettingsGrid": {
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 1 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "layer1",
+          "blockMass": { "value": 100 },
+          "linkSearchRadius": { "value": 0.6 },
+          "breakForce": {"value": 10000},
+          "isStatic": true
+        },
+        {
+          "id": "sc2",
+          "position": {
+            "x": { "value": 0 },
+            "y": { "value": 0 },
+            "z": { "value": 1 }
+          },
+          "generationAlgorithm": "Grid",
+          "generationSettingsGrid": {
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 1 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "layer2",
+          "blockMass": { "value": 100 },
+          "linkSearchRadius": { "value": 0.1 },
+          "breakForce": {"value": 10000}
+        },
+        {
+          "id": "sc3",
+          "position": {
+            "x": { "value": 0 },
+            "y": { "value": 0 },
+            "z": { "value": 2 }
+          },
+          "generationAlgorithm": "Grid",
+          "generationSettingsGrid": {
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 1 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "layer3",
+          "blockMass": { "value": 100 },
+          "linkSearchRadius": { "value": 0.6 },
+          "breakForce": {"value": 10000}
+        },
+        {
+          "id": "sc4",
+          "position": {
+            "x": { "value": 0 },
+            "y": { "value": 0 },
+            "z": { "value": 3 }
+          },
+          "generationAlgorithm": "Grid",
+          "generationSettingsGrid": {
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 3 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "layer4",
+          "blockMass": { "value": 100 },
+          "linkSearchRadius": { "value": 0.6 },
+          "breakForce": {"value": 10000}
+        },
+        {
+          "id": "sc5",
+          "position": {
+            "x": { "value": 0 },
+            "y": { "value": 0 },
+            "z": { "value": 6 }
+          },
+          "generationAlgorithm": "Grid",
+          "generationSettingsGrid": {
+              "size": {
+                "x": { "value": 5 },
+                "y": { "value": 5 },
+                "z": { "value": 1 }
+              },
+              "spacing": {
+                "x": { "value": 1 },
+                "y": { "value": 1 },
+                "z": { "value": 1 }
+              }
+          },
+          "blockGroupId": "layer5",
+          "blockMass": { "value": 100 },
+          "linkSearchRadius": { "value": 0.6 },
+          "breakForce": {"value": 10000}
+        }
+      ]
+    }
+  ]
+}
