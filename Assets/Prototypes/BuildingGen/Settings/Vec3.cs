@@ -40,17 +40,13 @@ namespace BuildingGen.Components
             Z = new Parameter<float>() { ConcreteValue = z };
         }
 
-        /// <summary>
-        /// Неявное преобразование в Unity.Vector3.
-        /// </summary>
-        public static implicit operator Vector3(Vec3 vec)
+        public Vector3 Evaluate(EvaluationContext context)
         {
             return new Vector3(
-                vec.X.ToFloat(),
-                vec.Y.ToFloat(),
-                vec.Z.ToFloat()
+                X.ToFloat(context),
+                Y.ToFloat(context),
+                Z.ToFloat(context)
             );
         }
     }
-
 }

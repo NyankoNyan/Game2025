@@ -27,7 +27,7 @@ namespace BuildingGen.Components.Converters
 
             foreach (var prop in obj.Properties())
             {
-                if (prop.Value is JObject jObj && jObj.ContainsKey("value"))
+                if (prop.Value is JObject jObj)
                 {
                     var parameter = _parameterConverter.ReadJson(jObj.CreateReader(), typeof(Parameter), null, false, serializer);
                     dict[prop.Name] = parameter;

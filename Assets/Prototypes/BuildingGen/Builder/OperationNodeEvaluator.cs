@@ -4,40 +4,26 @@ namespace BuildingGen.Components
 {
     public static class OperationNodeEvaluator
     {
-        public static object Evaluate(this OperationNode node)
+        public static object Evaluate(this OperationNode node, EvaluationContext context)
         {
             if (node.Value != null)
             {
-                return node.Value;
+                return node.Value.Evaluate(context);
             }
 
-            if (node.Operation == "+" && node.Operands.Count == 2)
+            if (node.Operands.Count == 2)
             {
-                object left = Evaluate(node.Operands[0]);
-                object right = Evaluate(node.Operands[1]);
+                object left = node.Operands[0].Evaluate(context);
+                object right = node.Operands[1].Evaluate(context);
 
-                return Add(left, right);
-            }
-            if (node.Operation == "-" && node.Operands.Count == 2)
-            {
-                object left = Evaluate(node.Operands[0]);
-                object right = Evaluate(node.Operands[1]);
-
-                return Subtract(left, right);
-            }
-            if (node.Operation == "*" && node.Operands.Count == 2)
-            {
-                object left = Evaluate(node.Operands[0]);
-                object right = Evaluate(node.Operands[1]);
-
-                return Multiply(left, right);
-            }
-            if (node.Operation == "/" && node.Operands.Count == 2)
-            {
-                object left = Evaluate(node.Operands[0]);
-                object right = Evaluate(node.Operands[1]);
-
-                return Divide(left, right);
+                if (node.Operation == "+")
+                    return Add(left, right);
+                else if (node.Operation == "-")
+                    return Subtract(left, right);
+                else if (node.Operation == "*")
+                    return Multiply(left, right);
+                else if (node.Operation == "/")
+                    return Divide(left, right);
             }
 
             throw new InvalidOperationException($"Неизвестная операция: {node.Operation}");
@@ -50,11 +36,11 @@ namespace BuildingGen.Components
 
             if (leftIsInt && rightIsInt)
             {
-                return GetIntegerValue(left) + GetIntegerValue(right);
+                return Convert.ToInt32(left) + Convert.ToInt32(right);
             }
             else
             {
-                return GetFloatValue(left) + GetFloatValue(right);
+                return Convert.ToSingle(left) + Convert.ToSingle(right);
             }
         }
 
@@ -65,11 +51,11 @@ namespace BuildingGen.Components
 
             if (leftIsInt && rightIsInt)
             {
-                return GetIntegerValue(left) - GetIntegerValue(right);
+                return Convert.ToInt32(left) - Convert.ToInt32(right);
             }
             else
             {
-                return GetFloatValue(left) - GetFloatValue(right);
+                return Convert.ToSingle(left) - Convert.ToSingle(right);
             }
         }
 
@@ -80,11 +66,11 @@ namespace BuildingGen.Components
 
             if (leftIsInt && rightIsInt)
             {
-                return GetIntegerValue(left) * GetIntegerValue(right);
+                return Convert.ToInt32(left) * Convert.ToInt32(right);
             }
             else
             {
-                return GetFloatValue(left) * GetFloatValue(right);
+                return Convert.ToSingle(left) * Convert.ToSingle(right);
             }
         }
 
@@ -95,35 +81,11 @@ namespace BuildingGen.Components
 
             if (leftIsInt && rightIsInt)
             {
-                return GetIntegerValue(left) / GetIntegerValue(right);
+                return Convert.ToInt32(left) / Convert.ToInt32(right);
             }
             else
             {
-                return GetFloatValue(left) / GetFloatValue(right);
-            }
-        }
-
-        private static int GetIntegerValue(object value)
-        {
-            if (value is Parameter param)
-            {
-                return param.ToInteger();
-            }
-            else
-            {
-                return Convert.ToInt32(value);
-            }
-        }
-
-        private static float GetFloatValue(object value)
-        {
-            if (value is Parameter param)
-            {
-                return param.ToFloat();
-            }
-            else
-            {
-                return Convert.ToSingle(value);
+                return Convert.ToSingle(left) / Convert.ToSingle(right);
             }
         }
 
@@ -136,10 +98,6 @@ namespace BuildingGen.Components
             else if (value is float floatValue)
             {
                 return floatValue == (int)floatValue;
-            }
-            else if (value is Parameter param)
-            {
-                return param.ToFloat() == (int)param.ToFloat();
             }
             return false;
         }

@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace NN
 {
 
     public class ScenePools : MonoBehaviour
     {
+        public class OnRestoreDefaultsEventArgs
+        {
+            public GameObject GameObject;
+        }
+        public UnityEvent<OnRestoreDefaultsEventArgs> OnRestoreDefaults = new();
+
         private static ScenePools _instance;
 
         private Dictionary<GameObject, Stack<GameObject>> _pools = new();
@@ -31,10 +38,10 @@ namespace NN
         private Stack<GameObject> GetPool(GameObject prefab)
         {
             Stack<GameObject> pool;
-            if (!_pools.TryGetValue( prefab, out pool ))
+            if (!_pools.TryGetValue(prefab, out pool))
             {
                 pool = new();
-                _pools.Add( prefab, pool );
+                _pools.Add(prefab, pool);
             }
             return pool;
         }
@@ -44,14 +51,14 @@ namespace NN
             if (pool.Count > 0)
             {
                 var go = pool.Pop();
-                go.SetActive( true );
+                go.SetActive(true);
                 go.transform.parent = null;
-                RestoreToDefaults( go );
                 return go;
-            } else
+            }
+            else
             {
-                var go = GameObject.Instantiate( prefab );
-                _toPrefabMap.Add( go, prefab );
+                var go = GameObject.Instantiate(prefab);
+                _toPrefabMap.Add(go, prefab);
                 go.name = prefab.name;
                 return go;
             }
@@ -59,27 +66,36 @@ namespace NN
 
         public GameObject Get(GameObject prefab)
         {
-            var pool = GetPool( prefab );
-            return GetObjectFromPool( pool, prefab );
+            var pool = GetPool(prefab);
+            return GetObjectFromPool(pool, prefab);
         }
 
         public void Remove(GameObject go)
         {
-            if (_toPrefabMap.TryGetValue( go, out var prefab ))
+            if (_toPrefabMap.TryGetValue(go, out var prefab))
             {
-                var pool = GetPool( prefab );
-                pool.Push( go );
+                var pool = GetPool(prefab);
+                pool.Push(go);
                 go.transform.parent = transform;
-                go.SetActive( false );
-            } else
+                RestoreToDefaults(go);
+                go.SetActive(false);
+            }
+            else
             {
-                Debug.LogError( $"Missing prefab for object {go.name}({go.GetInstanceID()}) " );
-                Destroy( go );
+                Debug.LogError($"Missing prefab for object {go.name}({go.GetInstanceID()}) ");
+                Destroy(go);
             }
         }
 
         private void RestoreToDefaults(GameObject go)
         {
+            OnRestoreDefaults.Invoke(new() { GameObject = go });
+
+            foreach (var joint in go.GetComponents<Joint>())
+            {
+                Destroy(joint);
+            }
+
             var rb = go.GetComponent<Rigidbody>();
             if (rb)
             {

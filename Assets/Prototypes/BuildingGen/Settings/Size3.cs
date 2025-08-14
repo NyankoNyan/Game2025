@@ -40,17 +40,13 @@ namespace BuildingGen.Components
             Z = new Parameter<int>() { ConcreteValue = z };
         }
 
-        /// <summary>
-        /// Неявное преобразование в Unity.Vector3Int.
-        /// </summary>
-        public static implicit operator Vector3Int(Size3 size)
+        public Vector3Int Evaluate(EvaluationContext context)
         {
             return new Vector3Int(
-                size.X.ToInteger(),
-                size.Y.ToInteger(),
-                size.Z.ToInteger()
+                X.ToInteger(context),
+                Y.ToInteger(context),
+                Z.ToInteger(context)
             );
         }
     }
-
 }

@@ -3,7 +3,49 @@
   "parameters":
     {
       "xsize": { "value": 5 },
-      "ysize": { "value": 5 }
+      "ysize": { "value": 5 },
+      "layer2height": { "value": 3 },
+      "layer4height": { "value": 5 },
+      "breakForcePerLayer": { "value": 1800 },
+      "blockMass": { "value": 100 },
+      "hitboxPadding": { "value": 0.1 },
+      "breakForce":{ "node":{
+        "operation": "*",
+        "nodes": [
+          { "param": { "ref": "layersTotal" } },
+          { "param": { "ref": "breakForcePerLayer" } }
+        ]
+      }},
+      "layer2offset": { "value": 1 },
+      "layer3offset": { "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer2offset" } },
+          { "param": { "ref": "layer2height" } }
+        ]
+      }},
+      "layer3height": { "value": 1 },
+      "layer4offset":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer3offset" } },
+          { "param": { "ref": "layer3height" } }
+        ]
+      }},
+      "layer5offset":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer4offset" } },
+          { "param": { "ref": "layer4height" } }
+        ]
+      }},
+      "layersTotal":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer5offset" } },
+          { "param": { "value": 1 } }
+        ]
+      }}
     },
   "blockGroups": [
     {
@@ -62,8 +104,8 @@
           "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
                 "z": { "value": 1 }
               },
               "spacing": {
@@ -73,9 +115,10 @@
               }
           },
           "blockGroupId": "layer1",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.6 },
-          "breakForce": {"value": 10000},
+          "blockMass": { "ref": "blockMass" },
+          "linkSearchRadius": { "value": 0.3 },
+          "breakForce": { "ref" : "breakForce" },
+          "hitboxPadding": { "ref" : "hitboxPadding" },
           "isStatic": true
         },
         {
@@ -83,14 +126,14 @@
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 1 }
+            "z": { "ref": "layer2offset" }
           },
           "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 1 }
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
+                "z": { "ref": "layer2height" }
               },
               "spacing": {
                 "x": { "value": 1 },
@@ -99,23 +142,24 @@
               }
           },
           "blockGroupId": "layer2",
-          "blockMass": { "value": 100 },
+          "blockMass": { "ref": "blockMass" },
           "linkSearchRadius": { "value": 0.1 },
-          "breakForce": {"value": 10000}
+          "breakForce": { "ref" : "breakForce" },
+          "hitboxPadding": { "ref" : "hitboxPadding" }
         },
         {
           "id": "sc3",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 2 }
+            "z": { "ref": "layer3offset" }
           },
           "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 1 }
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
+                "z": { "ref": "layer3height" }
               },
               "spacing": {
                 "x": { "value": 1 },
@@ -124,23 +168,24 @@
               }
           },
           "blockGroupId": "layer3",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.6 },
-          "breakForce": {"value": 10000}
+          "blockMass": { "ref": "blockMass" },
+          "linkSearchRadius": { "value": 0.3 },
+          "breakForce": { "ref" : "breakForce" },
+          "hitboxPadding": { "ref" : "hitboxPadding" }
         },
         {
           "id": "sc4",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 3 }
+            "z": { "ref": "layer4offset" }
           },
           "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 3 }
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
+                "z": { "ref": "layer4height" }
               },
               "spacing": {
                 "x": { "value": 1 },
@@ -149,22 +194,23 @@
               }
           },
           "blockGroupId": "layer4",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.6 },
-          "breakForce": {"value": 10000}
+          "blockMass": { "ref": "blockMass" },
+          "linkSearchRadius": { "value": 0.3 },
+          "breakForce": { "ref" : "breakForce" },
+          "hitboxPadding": { "ref" : "hitboxPadding" }
         },
         {
           "id": "sc5",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 6 }
+            "z": { "ref": "layer5offset" }
           },
           "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
                 "z": { "value": 1 }
               },
               "spacing": {
@@ -174,9 +220,10 @@
               }
           },
           "blockGroupId": "layer5",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.6 },
-          "breakForce": {"value": 10000}
+          "blockMass": { "ref": "blockMass" },
+          "linkSearchRadius": { "value": 0.3 },
+          "breakForce": { "ref" : "breakForce" },
+          "hitboxPadding": { "ref" : "hitboxPadding" }
         }
       ]
     }

@@ -1,11 +1,5 @@
 {
   "version": "1.0",
-  "parameters":
-    {
-      "xsize": { "value": 5 },
-      "ysize": { "value": 5 },
-      "breakForce":{ "value": 1000 }
-    },
   "blockGroups": [
     {
       "id": "layer1",

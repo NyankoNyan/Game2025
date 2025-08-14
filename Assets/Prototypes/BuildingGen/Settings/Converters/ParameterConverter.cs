@@ -19,7 +19,11 @@ namespace BuildingGen.Components.Converters
             if (parameter.OperationTree != null)
             {
                 // Сериализация дерева операций
-                obj["operationTree"] = JToken.FromObject(parameter.OperationTree, serializer);
+                obj["node"] = JToken.FromObject(parameter.OperationTree, serializer);
+            }
+            else if (!string.IsNullOrWhiteSpace(parameter.Reference))
+            {
+                obj["ref"] = parameter.Reference;
             }
             else
             {
@@ -51,10 +55,19 @@ namespace BuildingGen.Components.Converters
             JObject jo = JObject.Load(reader);
 
             // Проверка наличия дерева операций
-            if (jo.TryGetValue("operationTree", out JToken opTreeToken))
+            if (jo.TryGetValue("node", out JToken opTreeToken))
             {
                 OperationNode operationTree = opTreeToken.ToObject<OperationNode>(serializer);
                 return new Parameter<float> { OperationTree = operationTree };
+            }
+
+            // Проверка наличия ссылки
+            if (jo.TryGetValue("ref", out JToken refToken))
+            {
+                if (refToken.Type == JTokenType.String)
+                {
+                    return new Parameter<float> { Reference = refToken.ToObject<string>() };
+                }
             }
 
             // Проверка наличия значения

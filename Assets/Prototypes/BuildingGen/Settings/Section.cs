@@ -79,6 +79,12 @@ namespace BuildingGen.Components
         /// </summary>
         [JsonProperty("linkSearchRadius", NullValueHandling = NullValueHandling.Ignore)]
         public Parameter<float> LinkSearchRadius { get; set; }
+
+        /// <summary>
+        /// Отступ от графического хитбокса до физического.
+        /// </summary>
+        [JsonProperty("hitboxPadding", NullValueHandling = NullValueHandling.Ignore)]
+        public Parameter<float> HitboxPadding { get; set; }
         
         [JsonProperty("isStatic", NullValueHandling = NullValueHandling.Ignore)]
         public bool IsStatic{ get; set; }
@@ -96,6 +102,7 @@ namespace BuildingGen.Components
             BreakTorque = new(float.PositiveInfinity);
             BlockHealth = new(100);
             LinkSearchRadius = new(1);
+            HitboxPadding = new(.1f);
             IsStatic = false;
         }
     }

@@ -10,11 +10,11 @@
     
     // Значение через дерево операций (20 - 5)
     "height": { 
-      "operationTree": {
+      "node": {
         "operation": "-",
-        "operands": [
-          { "value": 20 },
-          { "value": 5 }
+        "nodes": [
+          { "param": { "value": 20 } },
+          { "param": { "value": 5 } }
         ]
       }
     }
@@ -87,7 +87,7 @@
 ### `Parameter`
 Абстрактный класс с поддержкой обобщённых типов:
 - **`Parameter<TValue>`** содержит поле `value` типа `TValue` (int/float).
-- Поддерживает дерево операций (`operationTree`) для вычисления значения.
+- Поддерживает дерево операций (`nodes`) для вычисления значения.
 
 Пример с конкретным значением:
 ```json
@@ -101,11 +101,11 @@
 ```json
 {
   "speed": {
-    "operationTree": {
+    "node": {
       "operation": "*",
-      "operands": [
-        { "value": 2 },
-        { "value": 3.5 }
+      "nodes": [
+          { "param": { "value": 2 } },
+          { "param": { "value": 3.5 } }
       ]
     }
   }
@@ -122,15 +122,15 @@
 Пример дерева:
 ```json
 {
-  "operationTree": {
+  "node": {
     "operation": "+",
-    "operands": [
+    "nodes": [
       { "value": 5 },
       {
         "operation": "*",
-        "operands": [
-          { "value": 2 },
-          { "value": 3 }
+        "nodes": [
+          { "param": { "value": 2 } },
+          { "param": { "value": 3 } }
         ]
       }
     ]
@@ -208,14 +208,14 @@
 1. **Параметры (`Parameter<TValue>`)**:
    - Для `int`: `"value": 10`
    - Для `float`: `"value": 5.5`
-   - Поддержка дерева операций через `"operationTree"`:
+   - Поддержка дерева операций через `"node"`:
      ```json
      {
-       "operationTree": {
+       "node": {
          "operation": "+",
-         "operands": [
-           { "value": 5 },
-           { "value": 3 }
+         "nodes": [
+           { "param": { "value": 5 } },
+           { "param": { "value": 3 } }
          ]
        }
      }

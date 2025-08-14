@@ -30,6 +30,11 @@ namespace BuildingGen.Components
         public Dictionary<GameObject, BlockInfoForLink> Blocks = new();
 
         /// <summary>
+        /// Контекст для переменных.
+        /// </summary>
+        public EvaluationContext EvaluationContext { get; internal set; }
+
+        /// <summary>
         /// Добавляет блок в контекст генерации.
         /// </summary>
         /// <param name="gameObject">Игровой объект блока.</param>

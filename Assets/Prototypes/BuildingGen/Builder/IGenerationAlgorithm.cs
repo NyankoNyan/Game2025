@@ -7,6 +7,6 @@ namespace BuildingGen.Components
     /// </summary>
     public interface IGenerationAlgorithm
     {
-        (List<BlockPointInfo>, List<BlockLink>, List<PotentialLink>) GeneratePositions(Section section);
+        (List<BlockPointInfo>, List<BlockLink>, List<PotentialLink>) GeneratePositions(Section section, EvaluationContext evalCtx);
     }
 }

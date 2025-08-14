@@ -5,13 +5,14 @@ namespace BuildingGen.Components
 {
     /// <summary>
     /// Абстрактный базовый класс параметра для системы параметрической генерации моделей зданий.
+    /// Приоритет вычислений: деререво операций > ссылка > значение параметра
     /// </summary>
     public abstract class Parameter
     {
         /// <summary>
         /// Дерево операций для вычисления значения параметра.
         /// </summary>
-        [JsonProperty("operationTree", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("node", NullValueHandling = NullValueHandling.Ignore)]
         public OperationNode OperationTree { get; set; }
 
         /// <summary>
@@ -28,12 +29,14 @@ namespace BuildingGen.Components
         /// <summary>
         /// Вычисляет значение как целое число.
         /// </summary>
-        public abstract int ToInteger();
+        public abstract int ToInteger(EvaluationContext context);
 
         /// <summary>
         /// Вычисляет значение как число с плавающей точкой.
         /// </summary>
-        public abstract float ToFloat();
+        public abstract float ToFloat(EvaluationContext context);
+
+        public abstract object Evaluate(EvaluationContext context);
     }
 
     /// <summary>
@@ -49,85 +52,44 @@ namespace BuildingGen.Components
 
         /// <inheritdoc/>
         [JsonIgnore] // Подавляем сериализацию этого свойства
-        public override object Value
-        {
-            get
-            {
-                if (typeof(TValue) == typeof(int))
-                {
-                    return ToInteger();
-                }
-                else if (typeof(TValue) == typeof(float))
-                {
-                    return ToFloat();
-                }
-                else
-                {
-                    return ConcreteValue;
-                }
-            }
-        }
+        public override object Value => ConcreteValue;
 
         public Parameter() : base() { }
 
         public Parameter(TValue value) : base()
-        { 
+        {
             ConcreteValue = value;
         }
 
         /// <inheritdoc/>
-        public override int ToInteger()
+        public override int ToInteger(EvaluationContext context)
         {
-            if (OperationTree != null)
-            {
-                var evaluated = OperationTree.Evaluate();
-                if (evaluated is Parameter param)
-                {
-                    return param.ToInteger();
-                }
-                else
-                {
-                    return Convert.ToInt32(evaluated);
-                }
-            }
-            else
-            {
-                if (ConcreteValue is Parameter param)
-                {
-                    return param.ToInteger();
-                }
-                else
-                {
-                    return Convert.ToInt32(ConcreteValue);
-                }
-            }
+            return Convert.ToInt32(Evaluate(context));
         }
 
         /// <inheritdoc/>
-        public override float ToFloat()
+        public override float ToFloat(EvaluationContext context)
+        {
+            return Convert.ToSingle(Evaluate(context));
+        }
+
+        public override object Evaluate(EvaluationContext context)
         {
             if (OperationTree != null)
             {
-                var evaluated = OperationTree.Evaluate();
-                if (evaluated is Parameter param)
-                {
-                    return param.ToFloat();
-                }
-                else
-                {
-                    return Convert.ToSingle(evaluated);
-                }
+                return OperationTree.Evaluate(context);
+            }
+            else if (!string.IsNullOrWhiteSpace(Reference))
+            {
+                Parameter refParam = context.GetParameter(Reference);
+                context.PushParameter(Reference);
+                object result = refParam.Evaluate(context);
+                context.PopParameter(Reference);
+                return result;
             }
             else
             {
-                if (ConcreteValue is Parameter param)
-                {
-                    return param.ToFloat();
-                }
-                else
-                {
-                    return Convert.ToSingle(ConcreteValue);
-                }
+                return ConcreteValue;
             }
         }
     }

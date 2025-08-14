@@ -1,3 +1,4 @@
+using NN;
 using UnityEngine;
 
 namespace Test
@@ -9,7 +10,7 @@ namespace Test
         void AddDamage(int damage);
     }
 
-    [RequireComponent( typeof( Rigidbody ) )]
+    [RequireComponent(typeof(Rigidbody))]
     public class DestructibleBlock : MonoBehaviour, IDestructible
     {
         [SerializeField]
@@ -42,6 +43,13 @@ namespace Test
             _joints = GetComponents<FixedJoint>();
         }
 
+        public void Setup(int healthBase, float physicsDamageMultiplier = 1f, bool drawGizmos = false)
+        {
+            _healthBase = _healthRemain = healthBase;
+            _physicsDamageMultiplier = physicsDamageMultiplier;
+            _drawGizmos = drawGizmos;
+        }
+
         public void AddDamage(int damage)
         {
             if (_healthRemain <= 0)
@@ -62,26 +70,27 @@ namespace Test
 
         private void Destruct()
         {
-            Destroy( gameObject );
+            ScenePools.Instance.Remove(this.gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             float deltaV;
-            Vector3 normal = collision.GetContact( 0 ).normal;
+            Vector3 normal = collision.GetContact(0).normal;
             if (collision.rigidbody)
             {
-                var relativeVelocity = Vector3.ProjectOnPlane( collision.rigidbody.linearVelocity - _rigidbody.linearVelocity, normal );
+                var relativeVelocity = Vector3.ProjectOnPlane(collision.rigidbody.linearVelocity - _rigidbody.linearVelocity, normal);
                 deltaV = relativeVelocity.magnitude * collision.rigidbody.mass / (collision.rigidbody.mass + _rigidbody.mass);
-            } else
-            {
-                deltaV = Vector3.ProjectOnPlane( _rigidbody.linearVelocity, normal ).magnitude;
             }
-            int damage = Mathf.FloorToInt( deltaV * _physicsDamageMultiplier );
+            else
+            {
+                deltaV = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal).magnitude;
+            }
+            int damage = Mathf.FloorToInt(deltaV * _physicsDamageMultiplier);
             if (damage > 0)
             {
-                Debug.Log( $"{collision.gameObject.name} hit {gameObject.name} with damage {damage}" );
-                AddDamage( damage );
+                Debug.Log($"{collision.gameObject.name} hit {gameObject.name} with damage {damage}");
+                AddDamage(damage);
             }
         }
 
@@ -95,9 +104,9 @@ namespace Test
             {
                 if (joint && joint.connectedBody)
                 {
-                    Gizmos.color = Color.Lerp( Color.green, Color.red, joint.currentForce.magnitude / joint.breakForce );
+                    Gizmos.color = Color.Lerp(Color.green, Color.red, joint.currentForce.magnitude / joint.breakForce);
 
-                    Gizmos.DrawLine( transform.position, joint.connectedBody.position );
+                    Gizmos.DrawLine(transform.position, joint.connectedBody.position);
                 }
             }
         }

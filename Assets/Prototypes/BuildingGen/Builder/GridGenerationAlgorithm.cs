@@ -9,7 +9,7 @@ namespace BuildingGen.Components
     /// </summary>
     public class GridGenerationAlgorithm : IGenerationAlgorithm
     {
-        public (List<BlockPointInfo>, List<BlockLink>, List<PotentialLink>) GeneratePositions(Section section)
+        public (List<BlockPointInfo>, List<BlockLink>, List<PotentialLink>) GeneratePositions(Section section, EvaluationContext evalCtx)
         {
             GenerationSettingsGrid settings = section.GenerationSettingsGrid;
             if (settings == null)
@@ -21,8 +21,8 @@ namespace BuildingGen.Components
             List<BlockLink> links = new();
             List<PotentialLink> potentialLinks = new();
 
-            Vector3Int size = settings.Size;
-            Vector3 spacing = settings.Spacing;
+            Vector3Int size = settings.Size.Evaluate(evalCtx);
+            Vector3 spacing = settings.Spacing.Evaluate(evalCtx);
             Vector2 midSize = new((size.x - 1) / 2f, (size.y - 1) / 2f);
 
             for (int x = 0; x < size.x; x++)

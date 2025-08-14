@@ -22,14 +22,14 @@ namespace BuildingGen.Components
         /// Операнды операции.
         /// Игнорируются, если узел содержит только значение.
         /// </summary>
-        [JsonProperty("operands", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("nodes", NullValueHandling = NullValueHandling.Ignore)]
         public List<OperationNode> Operands { get; set; }
 
         /// <summary>
         /// Значение узла, представленное как параметр.
         /// Используется, если узел не является операцией.
         /// </summary>
-        [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("param", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ParameterConverter))]
         public Parameter Value { get; set; }
 
