@@ -38,7 +38,7 @@ namespace BuildingGen.Components
 
         public ConfigFile()
         {
-            Version = "1.0";
+            Version = "0.1";
             Parameters = new Dictionary<string, Parameter>();
             BlockGroups = new List<BlockGroup>();
             Buildings = new List<Building>();
