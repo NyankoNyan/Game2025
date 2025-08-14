@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279d6087e3067134faa4f831f432bdd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _configName: Tests/BuildingGen/building2
+  _configName: Tests/BuildingGen/building
 --- !u!114 &685770606
 MonoBehaviour:
   m_ObjectHideFlags: 0

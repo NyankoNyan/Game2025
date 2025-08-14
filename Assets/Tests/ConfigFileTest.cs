@@ -12,8 +12,9 @@ public class ConfigFileTests
     {
         ""version"": ""1.0"",
         ""parameters"": {
-            ""height"": { ""value"": 10.0 },
-            ""width"": { ""value"": 5.0 }
+            ""blockMass"": { ""value"": 10.0 },
+            ""breakForce"": { ""value"": 100.0 },
+            ""breakTorque"": { ""value"": -1.0 }
         },
         ""blockGroups"": [
             {
@@ -28,20 +29,22 @@ public class ConfigFileTests
                 ""id"": ""b1"",
                 ""name"": ""MainBuilding"",
                 ""description"": """",
+                ""parameters"":{
+                    ""blockHealth"": { ""value"": 100.0 },
+                    ""linkSearchRadius"": { ""value"": 0.5 },
+                    ""hitboxPadding"": { ""value"": 0.05 }
+                },
                 ""sections"": [
                     {
                         ""id"": ""s1"",
                         ""description"": """",
                         ""position"": { ""x"": { ""value"": 0.0 }, ""y"": { ""value"": 0.0 }, ""z"": { ""value"": 0.0 } },
                         ""rotation"": { ""x"": { ""value"": 0.0 }, ""y"": { ""value"": 0.0 }, ""z"": { ""value"": 0.0 } },
-                        ""generationAlgorithm"": ""Grid"",
                         ""blockGroupId"": ""g1"",
-                        ""blockMass"": { ""value"": 10.0 },
-                        ""breakForce"": { ""value"": 100.0 },
-                        ""breakTorque"": { ""value"": -1.0 },
-                        ""blockHealth"": { ""value"": 100.0 },
-                        ""linkSearchRadius"": { ""value"": 0.5 },
-                        ""isStatic"": false
+                        ""parameters"": {
+                            ""generationAlgorithm"": { ""value"": ""Grid"" },
+                            ""isStatic"": { ""value"": false }
+                        }
                     }
                 ]
             }
@@ -58,9 +61,10 @@ public class ConfigFileTests
         // Assert - Проверка корректности парсинга
         Assert.IsNotNull(config);
         Assert.AreEqual("1.0", config.Version);
-        Assert.AreEqual(2, config.Parameters.Count);
-        Assert.IsTrue(config.Parameters.ContainsKey("height"));
-        Assert.IsTrue(config.Parameters.ContainsKey("width"));
+        Assert.AreEqual(3, config.Parameters.Count);
+        Assert.IsTrue(config.Parameters.ContainsKey("blockMass"));
+        Assert.IsTrue(config.Parameters.ContainsKey("breakForce"));
+        Assert.IsTrue(config.Parameters.ContainsKey("breakTorque"));
 
         // Проверка глобальных групп блоков
         Assert.IsNotNull(config.BlockGroups);
@@ -77,13 +81,15 @@ public class ConfigFileTests
         Assert.AreEqual("b1", building.Id);
         Assert.AreEqual("MainBuilding", building.Name);
         Assert.AreEqual(1, building.Sections.Count);
+        Assert.IsTrue(building.Parameters.ContainsKey("blockHealth"));
 
         // Проверка секций
         var section = building.Sections[0];
         Assert.AreEqual("s1", section.Id);
         Assert.IsNotNull(section.Position);
         Assert.IsNotNull(section.Rotation);
-        Assert.AreEqual("Grid", section.GenerationAlgorithm);
+        Assert.IsTrue(section.Parameters.ContainsKey("generationAlgorithm"));
+        Assert.AreEqual("Grid", (string)section.Parameters["generationAlgorithm"].Value);
         Assert.AreEqual("g1", section.BlockGroupId); // Теперь ссылка на ID группы
     }
 

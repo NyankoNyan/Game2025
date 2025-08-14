@@ -15,13 +15,40 @@ namespace BuildingGen.Components
     public class BuildingGenerator : MonoBehaviour
     {
         public delegate GameObject OnBlockInstantiateDelegate(GameObject prefab);
-        public delegate void OnBlockSetupDelegate(GameObject go, int health);
+        public delegate void OnBlockSetupDelegate(GameObject go, EvaluationContext evaluationContext);
+        public delegate void OnDefaultContextSetupDelegate(Dictionary<string, Parameter> parameters);
         public OnBlockInstantiateDelegate OnBlockInstantiate { get; set; }
         public OnBlockSetupDelegate OnBlockSetup { get; set; }
+        public OnDefaultContextSetupDelegate OnDefaultContextSetup { get; set; }
 
         private const int ColliderArraySize = 5; // Константа вместо волшебного числа
 
+        private static Dictionary<string, Parameter> _defaultParameters = new()
+        {
+            { Parameter.GenerationAlgorithm, new Parameter<string>("Grid") },
+            { Parameter.BlockMass, new Parameter<float>(100f) },
+            { Parameter.BreakForce, new Parameter<float>(20000f) },
+            { Parameter.BreakTorque, new Parameter<float>(20000f) },
+            { Parameter.LinkSearchRadius, new Parameter<float>(.3f) },
+            { Parameter.HitboxPadding, new Parameter<float>(.05f) },
+            { Parameter.IsStatic, new Parameter<bool>(false) },
+            // {Parameter.GenerationSettingsGrid, new Parameter<float>(0) },
+        };
+
+        private Dictionary<string, Parameter> _currentDefaultParameters;
+
         private Dictionary<string, ConfigFile> _configs = new();
+        private List<BuildingGenerationContext> _waitForPhysicsUpdate = new();
+        private List<BuildingGenerationContext> _waitForPhysicsUpdate2 = new();
+
+
+        void FixedUpdate()
+        {
+            SpawnJoints(_waitForPhysicsUpdate2);
+            _waitForPhysicsUpdate2.Clear();
+            _waitForPhysicsUpdate2.AddRange(_waitForPhysicsUpdate);
+            _waitForPhysicsUpdate.Clear();
+        }
 
         /// <summary>
         /// Загружает конфигурационный файл.
@@ -77,18 +104,35 @@ namespace BuildingGen.Components
         /// <param name="building">Объект здания.</param>
         private Transform GenerateBuilding(Building building, ConfigFile config)
         {
-            var context = new BuildingGenerationContext();
-            context.Root = new GameObject($"[{building.Id}] {building.Name}").transform;
-            context.EvaluationContext = new(null, config.Parameters);
+            var ctx = new BuildingGenerationContext();
+            ctx.Root = new GameObject($"[{building.Id}] {building.Name}").transform;
+
+            if (_currentDefaultParameters == null)
+            {
+                _currentDefaultParameters = new();
+                foreach (var (name, parameter) in _defaultParameters)
+                {
+                    _currentDefaultParameters.Add(name, parameter);
+                }
+                if (OnDefaultContextSetup != null)
+                {
+                    OnDefaultContextSetup(_currentDefaultParameters);
+                }
+            }
+
+            ctx.PushEvalContext(_defaultParameters);
+            ctx.PushEvalContext(config.Parameters);
+            ctx.PushEvalContext(building.Parameters);
 
             foreach (var section in building.Sections)
             {
-                GenerateSection(section, building, context);
+                ctx.PushEvalContext(section.Parameters);
+                GenerateSection(section, building, ctx);
+                ctx.PopEvalContext();
             }
+            _waitForPhysicsUpdate.Add(ctx);
 
-            LinkSections(context);
-
-            return context.Root.transform;
+            return ctx.Root.transform;
         }
 
         /// <summary>
@@ -96,13 +140,14 @@ namespace BuildingGen.Components
         /// </summary>
         /// <param name="section">Секция здания.</param>
         /// <param name="building">Объект здания.</param>
-        /// <param name="context">Контекст генерации.</param>
-        private void GenerateSection(Section section, Building building, BuildingGenerationContext context)
+        /// <param name="ctx">Контекст генерации.</param>
+        private void GenerateSection(Section section, Building building, BuildingGenerationContext ctx)
         {
             // Определяем позицию и поворот секции
-            Vector3 sectionPosition = GetSectionPosition(section, context.EvaluationContext);
-            Quaternion sectionRotation = GetSectionRotation(section, context.EvaluationContext);
-            float hitboxPadding = section.HitboxPadding.ToFloat(context.EvaluationContext);
+            Vector3 sectionPosition = GetSectionPosition(section, ctx.Evaluation);
+            Quaternion sectionRotation = GetSectionRotation(section, ctx.Evaluation);
+            float hitboxPadding = ctx.Evaluation.GetContextParameter(Parameter.HitboxPadding).ToFloat();
+            float blockMass = ctx.Evaluation.GetContextParameter(Parameter.BlockMass).ToFloat();
 
             // Получаем группу блоков
             BlockGroup blockGroup = GetBlockGroup(section.BlockGroupId);
@@ -113,17 +158,17 @@ namespace BuildingGen.Components
             }
 
             // Получаем алгоритм генерации
-            IGenerationAlgorithm algorithm = GetGenerationAlgorithm(section.GenerationAlgorithm);
+            IGenerationAlgorithm algorithm = GetGenerationAlgorithm(ctx.Evaluation.GetContextParameter(Parameter.GenerationAlgorithm).ToString());
 
             // Генерируем позиции блоков
-            var (blocksInfo, links, potentialLinks) = algorithm.GeneratePositions(section, context.EvaluationContext);
+            var (blocksInfo, links, potentialLinks) = algorithm.GeneratePositions(section, ctx.Evaluation);
             if (blocksInfo.Count == 0)
             {
                 Debug.LogWarning($"Нет позиций для генерации в секции '{section.Id}'.");
                 return;
             }
 
-            GameObject[] blockGOs = new GameObject[blocksInfo.Count];
+            GameObject[] blocksGO = new GameObject[blocksInfo.Count];
             for (int i = 0; i < blocksInfo.Count; i++)
             {
                 BlockPointInfo info = blocksInfo[i];
@@ -142,7 +187,7 @@ namespace BuildingGen.Components
                     blockInstance = GameObject.Instantiate(blockPrefab);
                 }
                 blockInstance.transform.SetPositionAndRotation(sectionPosition + sectionRotation * info.Offset, sectionRotation * info.Rotation);
-                blockInstance.transform.parent = context.Root;
+                blockInstance.transform.parent = ctx.Root;
 
                 var collider = blockInstance.GetComponent<Collider>();
                 if (!collider)
@@ -166,57 +211,58 @@ namespace BuildingGen.Components
                     // Добавляем Rigidbody
                     rb = blockInstance.AddComponent<Rigidbody>();
                 }
-                rb.mass = section.BlockMass.ToFloat(context.EvaluationContext);
-                rb.isKinematic = section.IsStatic;
+                rb.mass = blockMass;
+                rb.isKinematic = true;
 
-                // var gizmos = blockInstance.GetComponent<JointDebugDrawer>();
-                // if (!gizmos)
-                // {
-                //     gizmos = blockInstance.AddComponent<JointDebugDrawer>();
-                // }
-
-                blockGOs[i] = blockInstance;
-                context.AddBlock(blockInstance, context.SectionsCount, i);
+                blocksGO[i] = blockInstance;
+                ctx.AddBlock(blockInstance, ctx.SectionsCount, i);
 
                 if (OnBlockSetup != null)
                 {
-                    OnBlockSetup(blockInstance, section.BlockHealth.ToInteger(context.EvaluationContext));
+                    OnBlockSetup(blockInstance, ctx.Evaluation);
                 }
             }
 
-            // Подключаем блоки физическими соединениями
-            foreach (var link in links)
-            {
-                ConnectBlocks(blockGOs[link.Id1], blockGOs[link.Id2], section, context.EvaluationContext);
-            }
-
-            context.GeneratedSections.Add(new GeneratedSectionInfo(
-                id: context.SectionsCount,
+            ctx.GeneratedSections.Add(new GeneratedSectionInfo(
+                id: ctx.SectionsCount,
                 section: section,
                 position: sectionPosition,
                 rotation: sectionRotation,
+                innerLinks: links,
                 potentialLinks: potentialLinks,
-                blocksGO: blockGOs.ToList()));
-            context.SectionsCount++;
+                blocksGO: blocksGO.ToList()
+                ));
+            ctx.SectionsCount++;
         }
 
         /// <summary>
         /// Связывает секции через физические соединения.
         /// </summary>
-        /// <param name="context">Контекст генерации.</param>
-        private void LinkSections(BuildingGenerationContext context)
+        /// <param name="ctx">Контекст генерации.</param>
+        private void LinkSections(BuildingGenerationContext ctx)
         {
             HashSet<LinkProtector> linkProtectors = new();
             Collider[] colliders = new Collider[ColliderArraySize]; // Использование константы
 
-            for (int sectionId = 0; sectionId < context.GeneratedSections.Count; sectionId++)
+            for (int sectionId = 0; sectionId < ctx.GeneratedSections.Count; sectionId++)
             {
-                var sectionInfo = context.GeneratedSections[sectionId];
+                var sectionInfo = ctx.GeneratedSections[sectionId];
+                ctx.PushEvalContext(sectionInfo.Section.Parameters);
+
+                float linkSearchRadius = ctx.Evaluation.GetContextParameter(Parameter.LinkSearchRadius).ToFloat();
+                bool isStatic = ctx.Evaluation.GetContextParameter(Parameter.IsStatic).ToBool();
+
+                // Подключаем блоки физическими соединениями
+                foreach (var link in sectionInfo.InnerLinks)
+                {
+                    ConnectBlocks(sectionInfo.BlocksGO[link.Id1], sectionInfo.BlocksGO[link.Id2], ctx.Evaluation);
+                }
+
                 foreach (var link in sectionInfo.PotentialLinks)
                 {
                     GameObject sourceGO = null;
                     Vector3 searchPosition = sectionInfo.Position + sectionInfo.Rotation * link.LinkPosition;
-                    int count = Physics.OverlapSphereNonAlloc(searchPosition, sectionInfo.Section.LinkSearchRadius.ToFloat(context.EvaluationContext), colliders);
+                    int count = Physics.OverlapSphereNonAlloc(searchPosition, linkSearchRadius, colliders);
                     float minDistance = float.PositiveInfinity;
                     GameObject nearestTarget = null;
 
@@ -225,7 +271,7 @@ namespace BuildingGen.Components
                         Collider collider = colliders[i];
                         GameObject targetGO = collider.gameObject;
 
-                        if (context.Blocks.TryGetValue(targetGO, out var targetBlockInfo))
+                        if (ctx.Blocks.TryGetValue(targetGO, out var targetBlockInfo))
                         {
                             if (targetBlockInfo.SectionId != sectionInfo.Id)
                             {
@@ -248,11 +294,23 @@ namespace BuildingGen.Components
                         var linkProtector = new LinkProtector { GO1 = sourceGO, GO2 = nearestTarget };
                         if (!linkProtectors.Contains(linkProtector))
                         {
-                            ConnectBlocks(sourceGO, nearestTarget, sectionInfo.Section, context.EvaluationContext);
+                            ConnectBlocks(sourceGO, nearestTarget, ctx.Evaluation);
                             linkProtectors.Add(linkProtector);
                         }
                     }
                 }
+
+                if (!isStatic)
+                {
+                    // Запускаем физику
+                    foreach (var go in sectionInfo.BlocksGO)
+                    {
+                        var rb = go.GetComponent<Rigidbody>();
+                        rb.isKinematic = false;
+                    }
+                }
+
+                ctx.PopEvalContext();
             }
         }
 
@@ -317,15 +375,23 @@ namespace BuildingGen.Components
         /// <param name="a">Первый блок.</param>
         /// <param name="b">Второй блок.</param>
         /// <param name="section">Секция, к которой принадлежат блоки.</param>
-        private void ConnectBlocks(GameObject a, GameObject b, Section section, EvaluationContext evalCtx)
+        private void ConnectBlocks(GameObject a, GameObject b, EvaluationContext evalCtx)
         {
             FixedJoint joint = a.AddComponent<FixedJoint>();
             joint.connectedBody = b.GetComponent<Rigidbody>();
 
-            float breakForce = section.BreakForce.ToFloat(evalCtx);
-            float breakTorque = section.BreakTorque.ToFloat(evalCtx);
+            float breakForce = evalCtx.GetContextParameter(Parameter.BreakForce).ToFloat();
+            float breakTorque = evalCtx.GetContextParameter(Parameter.BreakTorque).ToFloat();
             joint.breakForce = (breakForce >= 0) ? breakForce : float.PositiveInfinity;
             joint.breakTorque = (breakTorque >= 0) ? breakTorque : float.PositiveInfinity;
+        }
+
+        private void SpawnJoints(List<BuildingGenerationContext> contexts)
+        {
+            if (contexts == null)
+                return;
+            foreach (var ctx in contexts)
+                LinkSections(ctx);
         }
 
         private struct LinkProtector

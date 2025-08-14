@@ -95,10 +95,32 @@ namespace BuildingGen.Components.Converters
                         throw new JsonSerializationException($"Ошибка десериализации float: {ex.Message}", ex);
                     }
                 }
+                else if (valueToken.Type == JTokenType.String)
+                {
+                    try
+                    {
+                        return new Parameter<string> { ConcreteValue = valueToken.ToObject<string>() };
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new JsonSerializationException($"Ошибка десериализации string: {ex.Message}", ex);
+                    }
+                }
+                else if (valueToken.Type == JTokenType.Boolean)
+                {
+                    try
+                    {
+                        return new Parameter<bool> { ConcreteValue = valueToken.ToObject<bool>() };
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new JsonSerializationException($"Ошибка десериализации bool: {ex.Message}", ex);
+                    }
+                }
                 else
                 {
                     var val = valueToken.ToObject<object>();
-                    throw new NotSupportedException($"Неизвестный тип значения: {val?.GetType()}. Поддерживаются только int, float.");
+                    throw new NotSupportedException($"Неизвестный тип значения: {val?.GetType()}.");
                 }
             }
 

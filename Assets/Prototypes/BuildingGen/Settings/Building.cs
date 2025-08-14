@@ -1,3 +1,4 @@
+using BuildingGen.Components.Converters;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -27,6 +28,13 @@ namespace BuildingGen.Components
         public string Description { get; set; }
 
         /// <summary>
+        /// Словарь параметров генерации, где ключ — имя параметра.
+        /// </summary>
+        [JsonProperty("parameters")]
+        [JsonConverter(typeof(ParameterDictionaryConverter))]
+        public Dictionary<string, Parameter> Parameters { get; set; }
+
+        /// <summary>
         /// Список секций здания.
         /// </summary>
         [JsonProperty("sections")]
@@ -37,6 +45,7 @@ namespace BuildingGen.Components
             Id = string.Empty;
             Name = string.Empty;
             Description = string.Empty;
+            Parameters = new Dictionary<string, Parameter>();
             Sections = new List<Section>();
         }
     }

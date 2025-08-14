@@ -18,6 +18,9 @@ namespace BuildingGen.Components
         /// </summary>
         public readonly Section Section;
 
+
+        public readonly List<BlockLink> InnerLinks;
+
         /// <summary>
         /// Потенциальные связи между блоками.
         /// </summary>
@@ -44,6 +47,7 @@ namespace BuildingGen.Components
         public GeneratedSectionInfo(
             int id,
             Section section,
+            List<BlockLink> innerLinks,
             List<PotentialLink> potentialLinks,
             Vector3 position,
             Quaternion rotation,
@@ -51,6 +55,7 @@ namespace BuildingGen.Components
         {
             Id = id;
             Section = section;
+            InnerLinks = innerLinks;
             PotentialLinks = potentialLinks;
             Position = position;
             Rotation = rotation;

@@ -19,8 +19,13 @@ namespace Test
         void Awake()
         {
             _buildingGenerator = GetComponent<BuildingGenerator>();
+            _buildingGenerator.OnDefaultContextSetup = (parameters) =>
+            {
+                parameters.Add("blockHealth", new Parameter<int>(100));
+                parameters.Add("physDamageMultiplier", new Parameter<float>(1));
+            };
             _buildingGenerator.OnBlockInstantiate = (prefab) => ScenePools.Instance.Get(prefab);
-            _buildingGenerator.OnBlockSetup = (go, health) =>
+            _buildingGenerator.OnBlockSetup = (go, evalCtx) =>
             {
                 var gizmos = go.GetComponent<JointDebugDrawer>();
                 if (!gizmos)
@@ -28,21 +33,26 @@ namespace Test
                     gizmos = go.AddComponent<JointDebugDrawer>();
                 }
 
-                var db = go.GetComponent<Test.DestructibleBlock>();
-                if (!db)
+                if (!evalCtx.GetContextParameter(Parameter.IsStatic).ToBool())
                 {
-                    db = go.AddComponent<Test.DestructibleBlock>();
-                    db.Setup(health);
+                    var db = go.GetComponent<Test.DestructibleBlock>();
+                    if (!db)
+                    {
+                        db = go.AddComponent<Test.DestructibleBlock>();
+                        db.Setup(
+                            evalCtx.GetContextParameter("blockHealth").ToInteger(),
+                            evalCtx.GetContextParameter("physDamageMultiplier").ToFloat()
+                            );
+                    }
                 }
 
             };
             ScenePools.Instance.OnRestoreDefaults.AddListener((args) =>
             {
-                
-                // foreach (var collider in args.GameObject.GetComponents<Collider>())
-                // {
-                //     DestroyImmediate(collider);
-                // }
+                foreach (var db in args.GameObject.GetComponents<Test.DestructibleBlock>())
+                {
+                    Destroy(db);
+                }
             });
         }
 

@@ -1,5 +1,55 @@
 {
-  "version": "0.1",
+  "version": "0.2",
+  "parameters":
+    {
+      "xsize": { "value": 5 },
+      "ysize": { "value": 5 },
+      "layer2height": { "value": 3 },
+      "layer4height": { "value": 5 },
+      "breakForcePerLayer": { "value": 3000 },
+      "blockMass": { "value": 100 },
+      "blockHealth": { "value": 10 },
+      "physDamageMultiplier": { "value": 10 },
+      "hitboxPadding": { "value": 0.1 },
+      "breakTorque":{ "value": 10000 },
+      "breakForce":{ "node":{
+        "operation": "*",
+        "nodes": [
+          { "param": { "ref": "layersTotal" } },
+          { "param": { "ref": "breakForcePerLayer" } }
+        ]
+      }},
+      "layer2offset": { "value": 1 },
+      "layer3offset": { "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer2offset" } },
+          { "param": { "ref": "layer2height" } }
+        ]
+      }},
+      "layer3height": { "value": 1 },
+      "layer4offset":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer3offset" } },
+          { "param": { "ref": "layer3height" } }
+        ]
+      }},
+      "layer5offset":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer4offset" } },
+          { "param": { "ref": "layer4height" } }
+        ]
+      }},
+      "layersTotal":{ "node":{
+        "operation": "+",
+        "nodes": [
+          { "param": { "ref": "layer5offset" } },
+          { "param": { "value": 1 } }
+        ]
+      }}
+    },
   "blockGroups": [
     {
       "id": "layer1",
@@ -46,6 +96,10 @@
     {
       "id": "b1",
       "name": "Futuristic Building",
+      "parameters":{
+        "generationAlgorithm": { "value": "Grid" },
+        "linkSearchRadius": { "value": 0.3 }
+      },
       "sections": [
         {
           "id": "sc1",
@@ -54,11 +108,10 @@
             "y": { "value": 0 },
             "z": { "value": 0 }
           },
-          "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
                 "z": { "value": 1 }
               },
               "spacing": {
@@ -66,26 +119,24 @@
                 "y": { "value": 1 },
                 "z": { "value": 1 }
               }
-          },
+            },
           "blockGroupId": "layer1",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.3 },
-          "breakForce": {"value": 10000},
-          "isStatic": true
+          "parameters": {
+            "isStatic": { "value": true }
+          }
         },
         {
           "id": "sc2",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 1 }
+            "z": { "ref": "layer2offset" }
           },
-          "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 1 }
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
+                "z": { "ref": "layer2height" }
               },
               "spacing": {
                 "x": { "value": 1 },
@@ -93,49 +144,41 @@
                 "z": { "value": 1 }
               }
           },
-          "blockGroupId": "layer2",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.1 },
-          "breakForce": {"value": 10000}
+          "blockGroupId": "layer2"
         },
         {
           "id": "sc3",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 2 }
+            "z": { "ref": "layer3offset" }
           },
-          "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
-              "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 1 }
-              },
-              "spacing": {
-                "x": { "value": 1 },
-                "y": { "value": 1 },
-                "z": { "value": 1 }
-              }
+            "size": {
+              "x": { "ref": "xsize" },
+              "y": { "ref": "ysize" },
+              "z": { "ref": "layer3height" }
+            },
+            "spacing": {
+              "x": { "value": 1 },
+              "y": { "value": 1 },
+              "z": { "value": 1 }
+            }
           },
-          "blockGroupId": "layer3",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.3 },
-          "breakForce": {"value": 10000}
+          "blockGroupId": "layer3"
         },
         {
           "id": "sc4",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 3 }
+            "z": { "ref": "layer4offset" }
           },
-          "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
-                "z": { "value": 3 }
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
+                "z": { "ref": "layer4height" }
               },
               "spacing": {
                 "x": { "value": 1 },
@@ -143,23 +186,19 @@
                 "z": { "value": 1 }
               }
           },
-          "blockGroupId": "layer4",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.3 },
-          "breakForce": {"value": 10000}
+          "blockGroupId": "layer4"
         },
         {
           "id": "sc5",
           "position": {
             "x": { "value": 0 },
             "y": { "value": 0 },
-            "z": { "value": 6 }
+            "z": { "ref": "layer5offset" }
           },
-          "generationAlgorithm": "Grid",
           "generationSettingsGrid": {
               "size": {
-                "x": { "value": 5 },
-                "y": { "value": 5 },
+                "x": { "ref": "xsize" },
+                "y": { "ref": "ysize" },
                 "z": { "value": 1 }
               },
               "spacing": {
@@ -168,10 +207,7 @@
                 "z": { "value": 1 }
               }
           },
-          "blockGroupId": "layer5",
-          "blockMass": { "value": 100 },
-          "linkSearchRadius": { "value": 0.3 },
-          "breakForce": {"value": 10000}
+          "blockGroupId": "layer5"
         }
       ]
     }

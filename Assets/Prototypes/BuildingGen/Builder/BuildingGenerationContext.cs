@@ -32,7 +32,9 @@ namespace BuildingGen.Components
         /// <summary>
         /// Контекст для переменных.
         /// </summary>
-        public EvaluationContext EvaluationContext { get; internal set; }
+        public EvaluationContext Evaluation { get; internal set; }
+
+        private Stack<EvaluationContext> _evaluationContextStack = new();
 
         /// <summary>
         /// Добавляет блок в контекст генерации.
@@ -46,6 +48,25 @@ namespace BuildingGen.Components
                 throw new ArgumentNullException(nameof(gameObject));
 
             Blocks[gameObject] = new BlockInfoForLink(gameObject, sectionId, blockId);
+        }
+
+        public void PushEvalContext(Dictionary<string, Parameter> parameters)
+        {
+            Evaluation = new EvaluationContext(Evaluation, parameters);
+            _evaluationContextStack.Push(Evaluation);
+        }
+
+        public void PopEvalContext()
+        {
+            _evaluationContextStack.Pop();
+            if (_evaluationContextStack.Count > 0)
+            {
+                Evaluation = _evaluationContextStack.Peek();
+            }
+            else
+            {
+                Evaluation = null;
+            }
         }
     }
 }

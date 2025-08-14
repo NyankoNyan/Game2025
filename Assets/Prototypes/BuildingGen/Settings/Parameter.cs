@@ -7,7 +7,7 @@ namespace BuildingGen.Components
     /// Абстрактный базовый класс параметра для системы параметрической генерации моделей зданий.
     /// Приоритет вычислений: деререво операций > ссылка > значение параметра
     /// </summary>
-    public abstract class Parameter
+    public abstract partial class Parameter
     {
         /// <summary>
         /// Дерево операций для вычисления значения параметра.
@@ -36,7 +36,11 @@ namespace BuildingGen.Components
         /// </summary>
         public abstract float ToFloat(EvaluationContext context);
 
+        public abstract string ToString(EvaluationContext context);
+
         public abstract object Evaluate(EvaluationContext context);
+
+        public abstract bool ToBool(EvaluationContext context);
     }
 
     /// <summary>
@@ -82,15 +86,62 @@ namespace BuildingGen.Components
             else if (!string.IsNullOrWhiteSpace(Reference))
             {
                 Parameter refParam = context.GetParameter(Reference);
-                context.PushParameter(Reference);
+                context.EnqueueParameter(Reference);
                 object result = refParam.Evaluate(context);
-                context.PopParameter(Reference);
+                context.DequeueParameter(Reference);
                 return result;
             }
             else
             {
                 return ConcreteValue;
             }
+        }
+
+        public override string ToString(EvaluationContext context)
+        {
+            return Convert.ToString(Evaluate(context));
+        }
+
+        public override bool ToBool(EvaluationContext context)
+        {
+            return Convert.ToBoolean(Evaluate(context));
+        }
+    }
+
+    public struct ContextParameter
+    {
+        private Parameter parameter;
+        private EvaluationContext context;
+
+        public ContextParameter(Parameter parameter, EvaluationContext context)
+        {
+            this.parameter = parameter;
+            this.context = context;
+        }
+
+        public int ToInteger()
+        {
+            return parameter.ToInteger(context);
+        }
+
+        public float ToFloat()
+        {
+            return parameter.ToFloat(context);
+        }
+
+        public object Evaluate()
+        {
+            return parameter.Evaluate(context);
+        }
+
+        public override string ToString()
+        {
+            return parameter.ToString(context);
+        }
+
+        public bool ToBool()
+        {
+            return parameter.ToBool(context);
         }
     }
 }

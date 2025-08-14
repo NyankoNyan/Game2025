@@ -40,7 +40,12 @@ namespace BuildingGen.Components
             }
         }
 
-        public void PushParameter(string name)
+        public ContextParameter GetContextParameter(string name)
+        {
+            return new ContextParameter( GetParameter(name), this );
+        }
+
+        public void EnqueueParameter(string name)
         {
             if (!_evaluationStack.Contains(name))
             {
@@ -52,7 +57,7 @@ namespace BuildingGen.Components
             }
         }
 
-        public void PopParameter(string name)
+        public void DequeueParameter(string name)
         {
             string lastParam = _evaluationStack.Pop();
             if (lastParam != name)
