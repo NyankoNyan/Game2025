@@ -1,9 +1,29 @@
 fileFormatVersion: 2
-guid: fed87fe7be6c6d44fa84d5ff164ce38d
+guid: 7775f599474554e4ea7ab30ff36b87a8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_armour
+    second: {fileID: 2100000, guid: bfcc11f4a7e0da242b54e4b74067ef7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_lens
+    second: {fileID: 2100000, guid: 92924e01affb52c4b9e59e1bfab6aa24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_paint1
+    second: {fileID: 2100000, guid: fafd64f762f59084dad20e79adfc28ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_paint2
+    second: {fileID: 2100000, guid: 69a566a9982a7484da8cccee4307fd6d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

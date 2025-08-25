@@ -1,12 +1,27 @@
 fileFormatVersion: 2
-guid: 7775f599474554e4ea7ab30ff36b87a8
+guid: 8394d30c08d2e824093be3ee5fc65318
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_armour
+    second: {fileID: 2100000, guid: bfcc11f4a7e0da242b54e4b74067ef7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_paint2
+    second: {fileID: 2100000, guid: 69a566a9982a7484da8cccee4307fd6d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_steel
+    second: {fileID: 2100000, guid: 931ff3c464194ec4d8063f1df0f40322, type: 2}
   materials:
     materialImportMode: 2
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:

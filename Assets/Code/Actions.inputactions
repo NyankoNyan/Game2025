@@ -168,6 +168,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "WeaponManagement",
+            "id": "28920b86-0aab-4d59-a986-038a4856009d",
+            "actions": [
+                {
+                    "name": "NextWeapon",
+                    "type": "Button",
+                    "id": "5a6dc4f6-719a-4fa6-b166-ac698a98094c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PrevWeapon",
+                    "type": "Button",
+                    "id": "a9088752-780b-4286-b333-d8d1d27c2f83",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3493e5a7-6153-4b97-8d6d-9015f2886b73",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0795c452-7ee3-4e24-afb7-e8650d754f4c",
+                    "path": "<Mouse>/backButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrevWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

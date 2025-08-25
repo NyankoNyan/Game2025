@@ -3,10 +3,35 @@ guid: 333981d1a075d9d4199a8ca7a2a3c7b4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_cloth
+    second: {fileID: 2100000, guid: b56ca8298142a6b4faa3dc56c4e41b5d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_coal
+    second: {fileID: 2100000, guid: 1d242304768a17447af959adad954654, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_paint1
+    second: {fileID: 2100000, guid: fafd64f762f59084dad20e79adfc28ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_paint2
+    second: {fileID: 2100000, guid: 69a566a9982a7484da8cccee4307fd6d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tmp_steel
+    second: {fileID: 2100000, guid: 931ff3c464194ec4d8063f1df0f40322, type: 2}
   materials:
     materialImportMode: 2
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:
