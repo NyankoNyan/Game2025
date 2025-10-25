@@ -185,7 +185,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 685770607}
-  - component: {fileID: 685770606}
   - component: {fileID: 685770605}
   - component: {fileID: 685770604}
   m_Layer: 0
@@ -223,18 +222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configName: Tests/BuildingGen/building
---- !u!114 &685770606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685770603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fdec939788d7e04eb58bc4626ca597c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &685770607
 Transform:
   m_ObjectHideFlags: 0

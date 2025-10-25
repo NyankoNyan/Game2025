@@ -7,18 +7,18 @@ using UnityEngine.UI;
 
 namespace Test
 {
-    [RequireComponent(typeof(BuildingGenerator))]
+    [RequireComponent(typeof(BuildingGeneratorObject))]
     public class BuildingGeneratorStarter : MonoBehaviour
     {
         [SerializeField]
         private string _configName = "";
 
-        private BuildingGenerator _buildingGenerator;
+        private BuildingGeneratorObject _buildingGenerator;
         private Transform _building;
 
-        void Awake()
+        private void Awake()
         {
-            _buildingGenerator = GetComponent<BuildingGenerator>();
+            _buildingGenerator = GetComponent<BuildingGeneratorObject>();
             _buildingGenerator.OnDefaultContextSetup = (parameters) =>
             {
                 parameters.Add("blockHealth", new Parameter<int>(100));
@@ -45,7 +45,6 @@ namespace Test
                             );
                     }
                 }
-
             };
             ScenePools.Instance.OnRestoreDefaults.AddListener((args) =>
             {
@@ -56,7 +55,7 @@ namespace Test
             });
         }
 
-        void Start()
+        private void Start()
         {
             RunGeneration();
         }
@@ -81,7 +80,7 @@ namespace Test
             }
         }
 
-        void RemoveBuilding(Transform building)
+        private void RemoveBuilding(Transform building)
         {
             var pool = ScenePools.Instance;
             for (int i = _building.childCount - 1; i >= 0; i--)

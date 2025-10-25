@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdaptiveGrid;
 using UnityEngine;
 
 namespace BlockSpawnLogic
 {
+
     [Serializable]
     public class LogicBlockGraphBuilder
     {
@@ -128,6 +130,10 @@ namespace BlockSpawnLogic
                 {
                     var parentNode = _allNodes[selectVariant.ParentIndex];
                     newNode.Depth = parentNode.Depth + 1;
+
+                    // Search free side of the parent
+                    newNode.Side = parentNode.MinimalSides(selectVariant.BlockSettings.Sides).ToArray().GetRandom();
+
                     parentNode.AddChild(newNode);
                 }
                 else
@@ -205,6 +211,18 @@ namespace BlockSpawnLogic
                 }
 
                 if (block.CompatibleInput.Length > 0 && !block.CompatibleInput.Contains(parent.Settings.Id))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    if(parent.MinimalSides(block.Sides).Count == 0)
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception)
                 {
                     return false;
                 }

@@ -95,7 +95,7 @@ namespace AdaptiveGrid
                 if (cellChange.Id)
                 {
                     cellGO = SpawnBlock(
-                        GetBlockVisual(cellState.Node.Settings.Id),
+                        GetBlockVisual(cellState.BlockOnGrid.Node.Settings.Id),
                         cellChange.Coord,
                         _processor.CurrentState.GetSize(cellChange.Coord)
                     );

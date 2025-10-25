@@ -1,24 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using BuildingGen.Tools;
-using NN;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace BuildingGen.Components
 {
     /// <summary>
     /// Генератор зданий на основе конфигурационного файла и пула объектов.
     /// </summary>
-    public class BuildingGenerator : MonoBehaviour
+    public class BuildingGenerator
     {
         public delegate GameObject OnBlockInstantiateDelegate(GameObject prefab);
+
         public delegate void OnBlockSetupDelegate(GameObject go, EvaluationContext evaluationContext);
+
         public delegate void OnDefaultContextSetupDelegate(Dictionary<string, Parameter> parameters);
+
+        /// <summary>
+        /// Позволяет перехватить инстанцирование блока. Используется для реализации пулов объектов или расширении компонент блоков.
+        /// </summary>
         public OnBlockInstantiateDelegate OnBlockInstantiate { get; set; }
+
+        /// <summary>
+        /// Позволяет настроить блок после его создания. Передаёт также контекст настроек из которого можно извлечь кастомные параметры.
+        /// </summary>
         public OnBlockSetupDelegate OnBlockSetup { get; set; }
+
+        /// <summary>
+        /// Событие настройки параметров по умолчанию перед генерацией здания.
+        /// </summary>
         public OnDefaultContextSetupDelegate OnDefaultContextSetup { get; set; }
 
         private const int ColliderArraySize = 5; // Константа вместо волшебного числа
@@ -41,8 +51,7 @@ namespace BuildingGen.Components
         private List<BuildingGenerationContext> _waitForPhysicsUpdate = new();
         private List<BuildingGenerationContext> _waitForPhysicsUpdate2 = new();
 
-
-        void FixedUpdate()
+        public void FlushJoints()
         {
             SpawnJoints(_waitForPhysicsUpdate2);
             _waitForPhysicsUpdate2.Clear();
@@ -193,11 +202,6 @@ namespace BuildingGen.Components
                 if (!collider)
                 {
                     var bxcol = blockInstance.AddComponent<BoxCollider>();
-                    // bxcol.center = new Vector3(
-                    //     (bxcol.size.x > Mathf.Epsilon) ? (bxcol.center.x - bxcol.center.x / bxcol.size.x * hitboxPadding) : 0,
-                    //     (bxcol.size.y > Mathf.Epsilon) ? (bxcol.center.y - bxcol.center.y / bxcol.size.y * hitboxPadding) : 0,
-                    //     (bxcol.size.z > Mathf.Epsilon) ? (bxcol.center.z - bxcol.center.z / bxcol.size.z * hitboxPadding) : 0
-                    //     );
                     bxcol.size = new Vector3(
                         Mathf.Max(Mathf.Epsilon, bxcol.size.x - 2 * hitboxPadding),
                         Mathf.Max(Mathf.Epsilon, bxcol.size.y - 2 * hitboxPadding),
@@ -283,8 +287,6 @@ namespace BuildingGen.Components
                                     minDistance = distance;
                                     nearestTarget = targetGO;
                                 }
-
-
                             }
                         }
                     }
@@ -364,6 +366,7 @@ namespace BuildingGen.Components
             {
                 case "Grid":
                     return new GridGenerationAlgorithm();
+
                 default:
                     throw new ArgumentException($"Алгоритм генерации '{name}' не поддерживается.");
             }

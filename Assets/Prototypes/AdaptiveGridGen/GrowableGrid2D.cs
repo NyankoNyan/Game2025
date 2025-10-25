@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 
 namespace AdaptiveGrid
 {
@@ -87,6 +86,11 @@ namespace AdaptiveGrid
                     yield return (cell, x, y);
                 }
             }
+        }
+
+        public bool HasCell(int x, int y)
+        {
+            return x >= Left && x <= Right && y >= Bottom && y <= Top;
         }
 
         public TCell this[int col, int row]
