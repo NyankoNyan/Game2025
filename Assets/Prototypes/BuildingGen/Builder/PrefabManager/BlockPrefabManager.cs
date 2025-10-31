@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -63,6 +63,12 @@ public class BlockPrefabManager : MonoBehaviour
     /// </summary>
     public GameObject GetPrefab(string blockId, bool isDamaged = false)
     {
+#if UNITY_EDITOR
+        if (_mappingDictionary == null)
+        {
+            Initialize();
+        }
+#endif
         if (!_mappingDictionary.TryGetValue(blockId, out var entry))
         {
             Debug.LogError($"Префаб для блока '{blockId}' не найден.");

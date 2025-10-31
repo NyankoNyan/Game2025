@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using UnityEngine;
 
 namespace BuildingGen.Components
@@ -35,9 +35,9 @@ namespace BuildingGen.Components
 
         public Vec3(float x, float y, float z)
         {
-            X = new Parameter<float>() { ConcreteValue = x };
-            Y = new Parameter<float>() { ConcreteValue = y };
-            Z = new Parameter<float>() { ConcreteValue = z };
+            X = new Parameter<float>() { Value = x };
+            Y = new Parameter<float>() { Value = y };
+            Z = new Parameter<float>() { Value = z };
         }
 
         public Vector3 Evaluate(EvaluationContext context)

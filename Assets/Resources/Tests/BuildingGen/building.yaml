@@ -1,0 +1,121 @@
+version: "0.3"
+
+parameters:
+  xsize: 5
+  ysize: 5
+  layer2height: 3
+  layer4height: 5
+  breakForcePerLayer: 3000
+  blockMass: 100
+  blockHealth: 10
+  physDamageMultiplier: 10
+  hitboxPadding: 0.1
+  breakTorque: 10000
+  breakForce:
+    mult:
+      - $layersTotal
+      - $breakForcePerLayer
+  layer2offset: 1
+  layer3offset:
+    add:
+      - $layer2offset
+      - $layer2height
+  layer3height: 1
+  layer4offset:
+    add:
+      - $layer3offset
+      - $layer3height
+  layer5offset:
+    add:
+      - $layer4offset
+      - $layer4height
+  layersTotal:
+    add:
+      - $layer5offset
+      - 1
+
+blockGroups:
+  - id: layer1
+    blocks:
+      - name: b2_f
+        pointType: Inside
+      - name: b2_bc1
+        pointType: Corner
+      - name: b2_bw1
+        pointType: Boundary
+  - id: layer2
+    blocks:
+      - name: b2_mi
+        pointType: Inside
+      - name: b2_bc2
+        pointType: Corner
+      - name: b2_bw2
+        pointType: Boundary
+  - id: layer3
+    blocks:
+      - name: b2_mi
+        pointType: Inside
+      - name: b2_bc3
+        pointType: Corner
+      - name: b2_bw3
+        pointType: Boundary
+  - id: layer4
+    blocks:
+      - name: b2_mi
+        pointType: Inside
+      - name: b2_mc
+        pointType: Corner
+      - name: b2_mw
+        pointType: Boundary
+  - id: layer5
+    blocks:
+      - name: b2_r
+        pointType: Inside
+      - name: b2_tc
+        pointType: Corner
+      - name: b2_tw
+        pointType: Boundary
+
+buildings:
+  - id: b1
+    name: Futuristic Building
+    parameters:
+      generationAlgorithm: Grid
+      linkSearchRadius: 0.3
+    sections:
+      - id: sc1
+        position: [0, 0, 0]
+        generationSettingsGrid:
+          size: [$xsize, $ysize, 1]
+          spacing: [1, 1, 1]
+        blockGroupId: layer1
+        parameters:
+          isStatic: true
+
+      - id: sc2
+        position: [0, 0, $layer2offset]
+        generationSettingsGrid:
+          size: [$xsize, $ysize, $layer2height]
+          spacing: [1, 1, 1]
+        blockGroupId: layer2
+
+      - id: sc3
+        position: [0, 0, $layer3offset]
+        generationSettingsGrid:
+          size: [$xsize, $ysize, $layer3height]
+          spacing: [1, 1, 1]
+        blockGroupId: layer3
+
+      - id: sc4
+        position: [0, 0, $layer4offset]
+        generationSettingsGrid:
+          size: [$xsize, $ysize, $layer4height]
+          spacing: [1, 1, 1]
+        blockGroupId: layer4
+
+      - id: sc5
+        position: [0, 0, $layer5offset]
+        generationSettingsGrid:
+          size: [$xsize, $ysize, 1]
+          spacing: [1, 1, 1]
+        blockGroupId: layer5

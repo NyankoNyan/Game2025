@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "BuildingGen",
-        "AdaptiveGrd"
+        "AdaptiveGrid",
+        "VYaml.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,7 +14,9 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "Newtonsoft.Json.dll"
+        "Newtonsoft.Json.dll",
+        "VYaml.dll",
+        "VYaml.Annotations.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

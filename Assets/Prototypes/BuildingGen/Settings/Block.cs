@@ -1,29 +1,27 @@
-using Newtonsoft.Json;
+﻿using VYaml.Annotations;
 
 namespace BuildingGen.Components
 {
     /// <summary>
     /// Описание блока.
     /// </summary>
-    public class Block
+    [YamlObject]
+    public partial class Block
     {
         /// <summary>
-        /// Уникальный идентификатор блока.
+        /// Имя блока.
         /// </summary>
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Тип точки блока.
         /// </summary>
-        [JsonProperty("pointType")]
         public PointType PointType { get; set; }
 
         public Block()
         {
-            Id = string.Empty;
+            Name = string.Empty;
             PointType = PointType.Inside;
         }
     }
-
 }

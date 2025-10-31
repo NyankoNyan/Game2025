@@ -1,32 +1,40 @@
+﻿using GluonGui.Dialog;
 using System;
 
 namespace BuildingGen.Components
 {
-    public static class OperationNodeEvaluator
+    public static class ParameterNodeEvaluator
     {
-        public static object Evaluate(this OperationNode node, EvaluationContext context)
+        public static object Evaluate(ParameterNode node, EvaluationContext context)
         {
-            if (node.Value != null)
+            if(node.Operands.Count == 0) 
+                throw new InvalidOperationException("Дерево операций пусто.");
+
+            object result = node.Operands[0].Evaluate(context);
+
+            for(int i =1;i< node.Operands.Count;i+=1)
             {
-                return node.Value.Evaluate(context);
+                object nextOperand = node.Operands[i].Evaluate(context);
+                switch(node.Operation)
+                {
+                    case OperationNode.ADD:
+                        result = Add(result, nextOperand);
+                        break;
+                    case OperationNode.SUBTRACT:
+                        result = Subtract(result, nextOperand);
+                        break;
+                    case OperationNode.MULTIPLY:
+                        result = Multiply(result, nextOperand);
+                        break;
+                    case OperationNode.DIVIDE:
+                        result = Divide(result, nextOperand);
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Неизвестная операция: {node.Operation}");
+                }
             }
 
-            if (node.Operands.Count == 2)
-            {
-                object left = node.Operands[0].Evaluate(context);
-                object right = node.Operands[1].Evaluate(context);
-
-                if (node.Operation == "+")
-                    return Add(left, right);
-                else if (node.Operation == "-")
-                    return Subtract(left, right);
-                else if (node.Operation == "*")
-                    return Multiply(left, right);
-                else if (node.Operation == "/")
-                    return Divide(left, right);
-            }
-
-            throw new InvalidOperationException($"Неизвестная операция: {node.Operation}");
+            return result;
         }
 
         private static object Add(object left, object right)

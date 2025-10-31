@@ -1,13 +1,13 @@
-using BuildingGen.Components;
+﻿using BuildingGen.Components;
 using BuildingGen.Tools;
-using Newtonsoft.Json;
 using NN;
+using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+using VYaml.Serialization;
 
 namespace Test
 {
-    [RequireComponent(typeof(BuildingGeneratorObject))]
+    [RequireComponent( typeof( BuildingGeneratorObject ) )]
     public class BuildingGeneratorStarter : MonoBehaviour
     {
         [SerializeField]
@@ -21,10 +21,10 @@ namespace Test
             _buildingGenerator = GetComponent<BuildingGeneratorObject>();
             _buildingGenerator.OnDefaultContextSetup = (parameters) =>
             {
-                parameters.Add("blockHealth", new Parameter<int>(100));
-                parameters.Add("physDamageMultiplier", new Parameter<float>(1));
+                parameters.Add( "blockHealth", new Parameter<int>( 100 ) );
+                parameters.Add( "physDamageMultiplier", new Parameter<float>( 1 ) );
             };
-            _buildingGenerator.OnBlockInstantiate = (prefab) => ScenePools.Instance.Get(prefab);
+            _buildingGenerator.OnBlockInstantiate = (prefab) => ScenePools.Instance.Get( prefab );
             _buildingGenerator.OnBlockSetup = (go, evalCtx) =>
             {
                 var gizmos = go.GetComponent<JointDebugDrawer>();
@@ -33,26 +33,26 @@ namespace Test
                     gizmos = go.AddComponent<JointDebugDrawer>();
                 }
 
-                if (!evalCtx.GetContextParameter(Parameter.IsStatic).ToBool())
+                if (!evalCtx.GetContextParameter( Parameter.IsStatic ).ToBool())
                 {
                     var db = go.GetComponent<Test.DestructibleBlock>();
                     if (!db)
                     {
                         db = go.AddComponent<Test.DestructibleBlock>();
                         db.Setup(
-                            evalCtx.GetContextParameter("blockHealth").ToInteger(),
-                            evalCtx.GetContextParameter("physDamageMultiplier").ToFloat()
+                            evalCtx.GetContextParameter( "blockHealth" ).ToInteger(),
+                            evalCtx.GetContextParameter( "physDamageMultiplier" ).ToFloat()
                             );
                     }
                 }
             };
-            ScenePools.Instance.OnRestoreDefaults.AddListener((args) =>
+            ScenePools.Instance.OnRestoreDefaults.AddListener( (args) =>
             {
                 foreach (var db in args.GameObject.GetComponents<Test.DestructibleBlock>())
                 {
-                    Destroy(db);
+                    Destroy( db );
                 }
-            });
+            } );
         }
 
         private void Start()
@@ -64,19 +64,19 @@ namespace Test
         {
             if (_building)
             {
-                RemoveBuilding(_building);
+                RemoveBuilding( _building );
             }
-            TextAsset configContent = Resources.Load<TextAsset>(_configName);
-            ConfigFile configFile = JsonConvert.DeserializeObject<ConfigFile>(configContent.text);
-            _buildingGenerator.LoadConfig(_configName, configFile);
-            _building = _buildingGenerator.GenerateBuilding("b1");
+            TextAsset configContent = Resources.Load<TextAsset>( _configName );
+            ConfigFile configFile = YamlSerializer.Deserialize<ConfigFile>( Encoding.UTF8.GetBytes( configContent.text ), BuildingGenYamlFormatterResolver.Options );
+            _buildingGenerator.LoadConfig( _configName, configFile );
+            _building = _buildingGenerator.GenerateBuilding( "b1" );
         }
 
         public void DestroyBuilding()
         {
             if (_building)
             {
-                RemoveBuilding(_building);
+                RemoveBuilding( _building );
             }
         }
 
@@ -85,9 +85,9 @@ namespace Test
             var pool = ScenePools.Instance;
             for (int i = _building.childCount - 1; i >= 0; i--)
             {
-                pool.Remove(_building.GetChild(i).gameObject);
+                pool.Remove( _building.GetChild( i ).gameObject );
             }
-            Destroy(building.gameObject);
+            Destroy( building.gameObject );
         }
     }
 }

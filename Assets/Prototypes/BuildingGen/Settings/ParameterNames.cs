@@ -1,4 +1,4 @@
-namespace BuildingGen.Components
+﻿namespace BuildingGen.Components
 {
     public abstract partial class Parameter
     {

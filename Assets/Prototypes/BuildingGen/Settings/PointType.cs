@@ -1,12 +1,11 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using VYaml.Annotations;
 
 namespace BuildingGen.Components
 {
     /// <summary>
     /// Тип точки блока.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [YamlObject(NamingConvention.UpperCamelCase)]
     public enum PointType
     {
         /// <summary>
@@ -22,12 +21,21 @@ namespace BuildingGen.Components
         /// <summary>
         /// Внешний угол.
         /// </summary>
-        OuterCorner,
+        Corner,
 
         /// <summary>
-        /// Внутренний угол.
+        /// Вынос стены из здания
         /// </summary>
-        InnerCorner
-    }
+        Peninsula,
 
+        /// <summary>
+        /// Стена, у которой соседние стены только с двух сторон
+        /// </summary>
+        Wall,
+
+        /// <summary>
+        /// Блок, у которого нет соседних блоков
+        /// </summary>
+        Island
+    }
 }
