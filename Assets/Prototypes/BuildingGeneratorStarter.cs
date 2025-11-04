@@ -1,6 +1,7 @@
 ﻿using BuildingGen.Components;
 using BuildingGen.Tools;
 using NN;
+using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 using VYaml.Serialization;

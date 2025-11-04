@@ -4,7 +4,7 @@ parameters:
   xsize: 5
   ysize: 5
   layer2height: 3
-  layer4height: 5
+  layer4height: 7
   breakForcePerLayer: 3000
   blockMass: 100
   blockHealth: 10

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c1069b399d0c34fbe83b9724195add, type: 3}
+  m_Name: PyramidABlockMapping
+  m_EditorClassIdentifier: 
+  _mappings:
+  - blockId: pyramid_a_boundary
+    intactPrefab: {fileID: 4696380712813022206, guid: d379ed551c9af4b4a8068a66d9d1d5a4, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: pyramid_a_corner
+    intactPrefab: {fileID: 7635782517352298916, guid: f923c07c391ffe54a961c31f417940be, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: pyramid_a_inner
+    intactPrefab: {fileID: 6580886380400851076, guid: b2618c346b4b6934e97fb13571dcef1d, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: pyramid_a_single
+    intactPrefab: {fileID: 7483383130878789186, guid: c11355b8b34bc9e4d9013d2e0d676e8d, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: pyramid_a_ublock
+    intactPrefab: {fileID: 3935126758265367147, guid: b781a6e1493e12c41a0cc88a41baab75, type: 3}
+    damagedPrefab: {fileID: 0}
+  - blockId: pyramid_a_wall
+    intactPrefab: {fileID: 3832199769377199322, guid: bc4cc5028ee2efd48b285a32a987667f, type: 3}
+    damagedPrefab: {fileID: 0}

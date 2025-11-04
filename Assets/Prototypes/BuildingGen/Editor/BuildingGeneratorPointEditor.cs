@@ -22,6 +22,11 @@ namespace BuildingGen.Editor
             {
                 targetComponent.RemoveBuilding();
             }
+
+            if(GUILayout.Button("Update gizmo"))
+            {
+                targetComponent.UpdateGizmo();
+            }
         }
     }
 }

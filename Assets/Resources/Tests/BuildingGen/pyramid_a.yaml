@@ -1,0 +1,93 @@
+version: 0.3
+
+parameters:
+  height: 4
+  blockHeight: 2
+  breakForcePerLayer: 3000
+  blockMass: 100
+  blockHealth: 10
+  physDamageMultiplier: 10
+  hitboxPadding: 0.1
+  breakTorque: 10000
+  breakForce:
+    mult:
+      - $height
+      - $breakForcePerLayer
+
+blockGroups:
+  - id: default
+    blocks:
+      - name: pyramid_a_boundary
+        pointType: Boundary
+      - name: pyramid_a_corner
+        pointType: Corner
+      - name: pyramid_a_inner
+        pointType: Inside
+      - name: pyramid_a_single
+        pointType: Island
+      - name: pyramid_a_ublock
+        pointType: Peninsula
+      - name: pyramid_a_wall
+        pointType: Wall
+
+buildings:
+  - id: pyramid_7x7_simple
+    name: Pyramid
+    parameters:
+      generationAlgorithm: Grid
+      linkSearchRadius: 0.6
+    sections:
+      - id: apex
+        blockGroupId: default
+        position:
+          z: 
+            mult:
+              - $blockHeight
+              - sub:
+                - $height 
+                - 1
+        generationSettingsGrid:
+          size: [1, 1, 1]
+          spacing: [1, 1, $blockHeight]
+      - id: 3x3
+        blockGroupId: default
+        position:
+          z: 
+            mult:
+              - $blockHeight
+              - sub:
+                - $height
+                - 2
+        generationSettingsGrid:
+          size: [3, 3, 1]
+          spacing: [1, 1, $blockHeight]
+      - id: 5x5
+        blockGroupId: default
+        position:
+          z: 
+            mult:
+              - $blockHeight
+              - sub:
+                - $height
+                - 3
+        generationSettingsGrid:
+          size: [5, 5, 1]
+          spacing: [1, 1, $blockHeight]
+      - id: 7x7
+        blockGroupId: default
+        position:
+          z: 
+            mult:
+              - $blockHeight
+              - sub:
+                - $height
+                - 4
+        generationSettingsGrid:
+          size: [7, 7, 1]
+          spacing: [1, 1, $blockHeight]
+        parameters:
+          isStatic: true
+
+
+
+    
